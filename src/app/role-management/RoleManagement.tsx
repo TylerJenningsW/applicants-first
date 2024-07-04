@@ -2,7 +2,7 @@
 
 import React, {useEffect} from 'react';
 import Image from 'next/image';
-
+import Link from 'next/link';
 
 import '../styles/RoleManagement.css'; // Import the CSS file
 
@@ -34,9 +34,7 @@ const RoleManagement: React.FC = () => {
           </select>
         </div>
         
-        <button className="button1">
-          Continue
-        </button>
+        <Link href="./register-form" type='continue'><button className="continue-button">Continue</button></Link>
        
       
       </main>
