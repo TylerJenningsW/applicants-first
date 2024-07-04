@@ -37,7 +37,7 @@ const TeamsPage: React.FC = () => {
           <h1 className="app-name">Applicants First</h1>
         </div>
         <div className="top-buttons">
-          <Link href="/login"><button className="button">Log Out</button></Link>
+          <Link href="/login-form"><button className="button">Log Out</button></Link>
         </div>
       </header>
 

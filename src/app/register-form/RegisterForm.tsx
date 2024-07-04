@@ -2,22 +2,12 @@
 
 import React from 'react';
 import '../styles/Register.css';
-import Link from 'next/link';
-import Image from 'next/image';
 
 const RegisterForm: React.FC = () => {
   return (
 
     
     <div className="register-container">
-
-    <header className="register-header">  
-        
-        <div className="logo1">
-          <Image src="/images/Logo.png" alt="App Logo" width={40} height={40} />
-          <h1>Applicants First</h1>
-        </div>
-      </header>
 
       <h2 className="register-title">Register</h2>
       <form className="register-form">

@@ -3,31 +3,16 @@
 @tailwind utilities;
 
 
-.register-header {
-    @apply w-full py-6 flex bg-blue-500 justify-center items-center w-full px-6 mt-2 ;
-}  
-  .logo1 {
-    @apply flex items-center;
-  }
-  
-  .logo1 img {
-    @apply h-12 w-16 mr-3;
-  }
-  
-  .logo1 h1 {
-    @apply text-white text-2xl font-bold ;
-  }
-  
 .register-container {
-  @apply flex flex-col items-center justify-center min-h-screen max-w-full from-blue-100 to-white p-4;
+  @apply flex flex-col items-center justify-center min-h-screen max-w-full from-blue-100 to-white p-4 mt-0;
 }
 
 .register-title {
-  @apply text-3xl font-bold mb-2 mt-8;
+  @apply text-3xl font-bold mb-2;
 }
 
 .register-form {
-  @apply bg-white rounded-lg shadow-lg p-8 w-full max-w-md mt-8;
+  @apply bg-white rounded-lg shadow-lg p-8 w-full max-w-md ;
 }
 
 .form-group {

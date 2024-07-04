@@ -3,9 +3,17 @@
 
 import React from 'react';
 import RoleManagement from './RoleManagement';
+import Header from '../components/Header';
 
 const RoleManagementPage: React.FC = () => {
-  return <RoleManagement />;
+  return(
+    <>
+      <Header/>
+     <RoleManagement />;
+    </>
+  );
+  
+ 
 };
 
 export default RoleManagementPage;

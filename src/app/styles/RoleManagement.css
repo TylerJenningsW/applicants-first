@@ -3,23 +3,6 @@
     @apply flex flex-col items-center justify-start min-h-screen max-w-full  bg-gradient-to-b from-blue-100 to-white;
   }
   
-  /* Header styles */
-  
-  .header1 {
-    @apply w-full py-6 flex bg-blue-500 justify-center items-center w-full px-6 mt-8 ;
-  }
-  .logo1 {
-    @apply flex items-center;
-  }
-  
-  .logo1 img {
-    @apply h-12 w-16 mr-3;
-  }
-  
-  .logo1 h1 {
-    @apply text-white text-2xl font-bold ;
-  }
-  
   /* Main content styles */
   .main1 {
     @apply flex flex-col items-center bg-white rounded-lg shadow-lg p-10 mt-32 w-full max-w-md mb-48;

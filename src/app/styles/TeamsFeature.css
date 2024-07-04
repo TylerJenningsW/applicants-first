@@ -4,7 +4,7 @@
 
 /* Header styles */
 .header {
-  @apply w-full py-6 bg-blue-500 flex justify-between items-center px-6 mt-8;
+  @apply w-full py-6 bg-blue-500 flex justify-between items-center px-6 mt-2;
 }
 
 .logo {

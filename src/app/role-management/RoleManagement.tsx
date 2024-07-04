@@ -11,14 +11,6 @@ const RoleManagement: React.FC = () => {
   return (
     <div className="container1">
       
-      
-      <header className="header1">
-        <div className="logo1">
-          <Image src="/images/Logo.png" alt="App Logo" width={40} height={40} />
-          <h1>Applicants First</h1>
-        </div>
-      </header>
-      
       <main className="main1">
         
         <Image src="/images/Logo.png" alt="Applicants First" width={80} height={80} />
