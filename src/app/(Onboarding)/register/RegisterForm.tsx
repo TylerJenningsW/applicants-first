@@ -3,74 +3,118 @@
 import React from 'react'
 import { useSearchParams } from 'next/navigation'
 import '@/app/styles/Register.css'
+import { useForm } from 'react-hook-form'
+import { RegisterFormValues } from '../../../../utils/types'
+import { RegisterFormValidation } from '../../../../utils/validation'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 const RegisterForm: React.FC = () => {
   const searchParams = useSearchParams()
   const role = searchParams.get('role') as string
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormValues>({
+    resolver: zodResolver(RegisterFormValidation),
+  })
+
+  const onSubmit = async (data: RegisterFormValues) => {
+    const formData = new FormData()
+    formData.append('firstName', data.firstName)
+    formData.append('lastName', data.lastName)
+    formData.append('email', data.email)
+    formData.append('phoneNumber', data.phoneNumber)
+    formData.append('password', data.password)
+    formData.append('role', role)
+
+    try {
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!response.ok) {
+        throw new Error('Signup failed')
+      }
+    } catch (error) {
+      console.error('Signup failed', error)
+    }
+  }
 
   return (
     <div className="register-container">
       <h2 className="register-title">Register</h2>
-      <form className="register-form" method="POST" action="/api/signup">
+      <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="firstName">First Name</label>
           <input
             type="text"
             id="firstName"
-            name="firstName"
+            {...register('firstName')}
             className="form-input"
-            required
           />
+          {errors.firstName && (
+            <p className="error">{errors.firstName.message}</p>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="lastName">Last Name</label>
           <input
             type="text"
             id="lastName"
-            name="lastName"
+            {...register('lastName')}
             className="form-input"
-            required
           />
+          {errors.lastName && (
+            <p className="error">{errors.lastName.message}</p>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
-            name="email"
+            {...register('email')}
             className="form-input"
-            required
           />
+          {errors.email && <p className="error">{errors.email.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="phoneNumber">Phone Number</label>
           <input
             type="tel"
             id="phoneNumber"
-            name="phoneNumber"
+            {...register('phoneNumber')}
             className="form-input"
-            required
           />
+          {errors.phoneNumber && (
+            <p className="error">{errors.phoneNumber.message}</p>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
-            name="password"
+            {...register('password')}
             className="form-input"
-            required
           />
+          {errors.password && (
+            <p className="error">{errors.password.message}</p>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="confirmPassword">Confirm Password</label>
           <input
             type="password"
             id="confirmPassword"
-            name="confirmPassword"
+            {...register('confirmPassword')}
             className="form-input"
-            required
           />
+          {errors.confirmPassword && (
+            <p className="error">{errors.confirmPassword.message}</p>
+          )}
         </div>
         <input id="role" name="role" type="hidden" value={role} />
         <button type="submit" className="register-button">
