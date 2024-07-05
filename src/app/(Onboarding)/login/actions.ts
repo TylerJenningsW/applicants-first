@@ -1,6 +1,8 @@
-import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
-import { getServerClient } from "../../../utils/supabase/supabaseClient"
+'use server'
+
+import { redirect } from 'next/navigation'
+
+import { getServerClient } from '../../../../utils/supabase/supabaseClient'
 
 export async function login(formData: FormData) {
   const supabase = getServerClient()
@@ -38,6 +40,4 @@ export async function login(formData: FormData) {
   } else {
     redirect('/')
   }
-
-  revalidatePath('/', 'layout')
 }
