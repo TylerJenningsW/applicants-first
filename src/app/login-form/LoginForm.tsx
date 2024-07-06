@@ -2,7 +2,6 @@
 
 import React from 'react';
 import '../styles/Login.css';
-import Image from 'next/image';
 import Link from 'next/link';
 import { login, signup } from '../login/actions'; // Import the actions
 
