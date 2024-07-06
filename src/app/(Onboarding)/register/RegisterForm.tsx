@@ -1,14 +1,18 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import '@/app/styles/Register.css'
 import { useForm } from 'react-hook-form'
 import { RegisterFormValues } from '../../../../utils/types'
 import { RegisterFormValidation } from '../../../../utils/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { signup } from './actions'
+import { useFormStatus } from 'react-dom'
 
 const RegisterForm: React.FC = () => {
+  const { pending } = useFormStatus()
+  const [error, setError] = useState<string | null>(null)
   const searchParams = useSearchParams()
   const role = searchParams.get('role') as string
   const {
@@ -29,16 +33,10 @@ const RegisterForm: React.FC = () => {
     formData.append('role', role)
 
     try {
-      const response = await fetch('/api/signup', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (!response.ok) {
-        throw new Error('Signup failed')
-      }
+      await signup(formData)
     } catch (error) {
       console.error('Signup failed', error)
+      setError('Signup failed')
     }
   }
 
@@ -117,7 +115,7 @@ const RegisterForm: React.FC = () => {
           )}
         </div>
         <input id="role" name="role" type="hidden" value={role} />
-        <button type="submit" className="register-button">
+        <button type="submit" className="register-button" disabled={pending}>
           Register
         </button>
       </form>
