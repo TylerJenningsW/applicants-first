@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import '../styles/Login.css'
+import '@/app/styles/login.css'
 import Link from 'next/link'
 import { login } from './actions' // Import the actions
 

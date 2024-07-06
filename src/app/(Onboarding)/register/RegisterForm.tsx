@@ -14,7 +14,7 @@ const RegisterForm: React.FC = () => {
   const { pending } = useFormStatus()
   const [error, setError] = useState<string | null>(null)
   const searchParams = useSearchParams()
-  const role = searchParams.get('role') as string
+  let role = searchParams.get('role') as string
   const {
     register,
     handleSubmit,
@@ -31,7 +31,9 @@ const RegisterForm: React.FC = () => {
     formData.append('phoneNumber', data.phoneNumber)
     formData.append('password', data.password)
     formData.append('role', role)
-
+    if (role === null || role === '') {
+      role = 'Recruiter'
+    }
     try {
       await signup(formData)
     } catch (error) {
