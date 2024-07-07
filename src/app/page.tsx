@@ -26,7 +26,7 @@ export default function Home() {
           <h2 className="welcome-heading">Welcome to Applicants First</h2>
           <p className="intro-text">The HR management app designed to streamline your hiring process. Manage applicants, track performance, and onboard new employees efficiently.</p>
           <div className="action-buttons">
-            <Link href="/login-form"><button className="animated-button">Log In</button></Link>
+            <Link href="/login"><button className="animated-button">Log In</button></Link>
             <Link href="/role-management"><button className="animated-button">Join Now</button></Link>
           </div>
         </div>
