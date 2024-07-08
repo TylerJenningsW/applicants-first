@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import '@/app/styles/login.css'
+import '../../styles/Login.css'
 import Link from 'next/link'
 import { login } from './actions' // Import the actions
 
@@ -35,7 +35,7 @@ const LoginForm: React.FC = () => {
           <Link href="/forgot-password" legacyBehavior>
             <a className="forgot-password-link">Forgot Password?</a>
           </Link>
-          <Link href="/register-form" legacyBehavior>
+          <Link href="/register" legacyBehavior>
             <a className="register-link">Register</a>
           </Link>
         </div>
