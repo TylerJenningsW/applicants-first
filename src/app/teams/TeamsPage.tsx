@@ -1,9 +1,8 @@
-"use client"; // Add this directive if using Next.js
-
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import '../styles/TeamsFeature.css';
+import Modal from 'react-modal';
+import '../styles/TeamsFeature.css'; // Adjust the path as necessary
 
 interface Employee {
   name: string;
@@ -12,22 +11,16 @@ interface Employee {
   hireDate: string;
 }
 
+
 const TeamsPage: React.FC = () => {
   const employees: Employee[] = [
     // This will be filled with actual data later
-    {
-        name: "John Doe",
-        role: "Software Engineer",
-        email: "john.doe@example.com",
-        hireDate: "2021-01-15",
-      },
-      {
-        name: "Jane Smith",
-        role: "Product Manager",
-        email: "jane.smith@example.com",
-        hireDate: "2019-07-22",
-      },
   ];
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
 
   return (
     <div className="teams-container">
@@ -37,9 +30,14 @@ const TeamsPage: React.FC = () => {
           <h1 className="app-name">Applicants First</h1>
         </div>
         <div className="top-buttons">
+        <button className="button" onClick={openModal}>Invite</button>
           <Link href="/login-form"><button className="button">Log Out</button></Link>
         </div>
       </header>
+
+      <Link href="/previous-page" legacyBehavior>
+        <button className="back-button">Back</button>
+      </Link>
 
       <h2 className="teams-title">Teams</h2>
       <div className="teams-table-wrapper">
@@ -66,6 +64,26 @@ const TeamsPage: React.FC = () => {
           </tbody>
         </table>
       </div>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        className="modal-content"
+        overlayClassName="modal-overlay"
+      >
+        <div className="modal-header">Please Enter Email</div>
+        <div className="modal-body">
+          <input
+            type="email"
+            placeholder="Email"
+            className="form-input w-full"
+          />
+        </div>
+        <div className="modal-footer">
+          <button onClick={closeModal} className="close-button">Close</button>
+          <button onClick={closeModal} className="send-button">Send Invitation</button>
+        </div>
+      </Modal>
     </div>
   );
 };
