@@ -35,7 +35,7 @@ const TeamsPage: React.FC = () => {
         </div>
       </header>
 
-      <Link href="/previous-page" legacyBehavior>
+      <Link href="/admin-dashboard" legacyBehavior>
         <button className="back-button">Back</button>
       </Link>
 
