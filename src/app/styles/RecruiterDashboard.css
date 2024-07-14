@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.dashboard-container-recruiter{
+    @apply flex flex-col min-h-screen bg-gradient-to-b from-blue-100 to-white p-4 max-w-full;
+}
+
+/* Header */
+.admin-header {
+    @apply w-full from-blue-100 to-white  flex justify-between items-center px-6 py-4 bg-gradient-to-b;
+  }
+
+  
+.admin-logo {
+    @apply flex items-center;
+  }
+
+  .admin-logo img {
+    @apply h-10 w-10 mr-3;
+  }
+  
+  .admin-app-name {
+    @apply text-blue-500 text-2xl font-bold;
+  }
+  
+  .user-info-recruiter {
+    @apply flex items-center space-x-4;
+  }
+  
+  .logout-button {
+    @apply bg-blue-500 text-white border border-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300;
+  }
+
+
+  /* Nav Container */
+
+ 
+ .nav-container-recruiter{
+    @apply w-full bg-blue-500 p-2 ;
+ }
+
+ .nav-bar {
+    @apply flex justify-center space-x-24 px-6 py-4;
+  }
+  
+  .nav-link {
+    @apply text-white text-lg hover:text-blue-200 transition duration-300 font-bold;
+  }
+  
+  
+  .main-content-recruiter {
+    @apply flex flex-col items-center justify-center flex-grow text-center mt-8;
+  }
+  
+  .main-content-recruiter h2 {
+    @apply text-3xl font-bold mb-4;
+  }
+  
+  .main-content-recruiter p {
+    @apply text-lg text-gray-700;
+  }
+  

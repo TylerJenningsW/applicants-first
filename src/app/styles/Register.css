@@ -30,3 +30,37 @@
 .register-button {
   @apply w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mt-8;
 }
+
+
+/* Modal style for email veryfication  */
+.modal-overlay1 {
+  @apply fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center;
+}
+
+.modal-content1 {
+  @apply bg-white rounded-lg shadow-lg p-8 max-w-md w-full;
+}
+
+.modal-header1 {
+  @apply text-xl font-bold mb-4 text-blue-500;
+}
+
+.modal-body1 {
+  @apply mb-4;
+}
+
+.modal-footer1 {
+  @apply flex justify-end space-x-4;
+}
+
+.close-button1,
+.send-button1 {
+  @apply bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300;
+}
+
+.close-button1 {
+  @apply bg-gray-500 hover:bg-gray-600;
+}
+.form-input1{
+  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500;
+}
