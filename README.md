@@ -9,30 +9,54 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - Recruiter Dashboard - Manage jobs.
 
 
-## Getting Started
+## Technologies
+- **Frontend**: [Next.js](https://nextjs.org/)
+- **Backend**: Node.js, Next.js
+- **Database**: Supabase (PostgreSQL)
+- **APIs**: Supabase, Resend  
 
-First, run the development server:
+## Installation
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/tylerjenningsw/applicants-first.git
+    cd applicants-first
+    ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. Install dependencies:
+    ```bash
+    npm install
+    ```
+3. Setup environment variables:
+    Create a `.env.local` file in the root directory and add the following variables:
+    ```bash
+    NEXT_PUBLIC_SUPABASE_URL=<YOUR_URL>
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=<YOUR_KEY>
+    DATABASE_URL=<YOUR_DB_URL>
+    RESEND_API_KEY=<YOUR_RESEND_API_KEY>
+    ```
+4. Run the development server:
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    # or
+    pnpm dev
+    # or
+    bun dev
+    ```
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Development Setup
+To set up the development environment:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-## Environment variable setup  
-```bash
-NEXT_PUBLIC_SUPABASE_URL=<YOUR_URL>
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<YOUR_KEY>
-DATABASE_URL=<YOUR_DB_URL>
-RESEND_API_KEY=<YOUR_RESEND_API_KEY>
-```
+1. Ensure you have Node.js and npm installed.
+2. Follow the installation steps above.
+3. Use the following command to compile and create an initial build:
+    ```bash
+    npm run build
+    ```  
+
+
 ## Supabase Setup
 - Create a Supabase Project: Visit https://supabase.com/ and follow their instructions to create a new project.
 - Database Setup: Use the Supabase dashboard to create the necessary tables and relationships for your application's data model.
@@ -113,8 +137,28 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.  
+
+## Project Status
+This project is currently in the Alpha stage. Features are being developed and tested.  
+
+## Contributors
+- **Tyler Jennings** - [GitHub](https://github.com/tylerjennings)
+- **Juan Fuente** - [GitHub](https://github.com/Juan-Fuente)
+- **Yoendris Rodriguez** - [GitHub](https://github.com/Yoendris97)
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+### Roadmap
+- **Version 1.0**: Initial Alpha Release
+- **Version 2.0**: Beta Release
+
+### Support
+For support, please reach out to our [GitHub Issues](https://github.com/tylerjenningsw/applicants-first/issues) page.
+
