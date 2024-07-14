@@ -1,9 +1,8 @@
-// src/app/jobs/[slug]/apply.tsx
 import React, { useState } from "react";
-import { supabase } from "applicants-first\applicants-first\utils\supabase\supabaseClient.ts";
 import { useRouter } from "next/router";
+import { supabase } from "../../../supabaseClient";
 
-const ApplyPage: React.FC = () => {
+const ApplyPage = () => {
   const router = useRouter();
   const { slug } = router.query;
   const [fullname, setFullname] = useState("");
@@ -30,7 +29,7 @@ const ApplyPage: React.FC = () => {
         zipcode,
         country,
         linkedinurl,
-        job_id: slug, // Assuming you have a foreign key relationship
+        job_id: slug,
       },
     ]);
 
@@ -38,7 +37,7 @@ const ApplyPage: React.FC = () => {
       console.error("Error inserting applicant:", error);
     } else {
       console.log("Applicant inserted:", data);
-      router.push(`/jobs/${slug}`);
+      router.push(`/Jobs/${slug}`);
     }
   };
 
