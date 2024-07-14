@@ -26,7 +26,13 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
+## Environment variable setup  
+```bash
+NEXT_PUBLIC_SUPABASE_URL=<YOUR_URL>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<YOUR_KEY>
+DATABASE_URL=<YOUR_DB_URL>
+RESEND_API_KEY=<YOUR_RESEND_API_KEY>
+```
 ## Supabase Setup
 - Create a Supabase Project: Visit https://supabase.com/ and follow their instructions to create a new project.
 - Database Setup: Use the Supabase dashboard to create the necessary tables and relationships for your application's data model.
@@ -93,6 +99,10 @@ CREATE TABLE Job (
   ApplicationDeadline TIMESTAMP NOT NULL
 );
 ```
+
+## Resend Setup  
+- Create a resend account and follow the next.js quickstart guide [here](https://resend.com/docs/send-with-nextjs).
+- You will need to modify any email function using your own DNS.  
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
@@ -107,4 +117,4 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
