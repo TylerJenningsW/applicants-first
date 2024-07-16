@@ -18,6 +18,8 @@ const RegisterForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   //Verify Email
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  
+  
   const searchParams = useSearchParams()
   let role = searchParams.get('role') as string
   const {
@@ -128,7 +130,7 @@ const RegisterForm: React.FC = () => {
           )}
         </div>
         <input id="role" name="role" type="hidden" value={role} />
-        <button type="submit"className="register-button" disabled={pending}>
+        <button type="submit" className="register-button" disabled={pending}>
           Register
         </button>
       </form>

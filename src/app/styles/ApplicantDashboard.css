@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* Dashboard Container */
-.dashboard-container {
+.dashboard-container-applicant {
   @apply flex flex-col min-h-screen bg-gradient-to-b from-blue-100 to-white p-4 max-w-full;
 }
 
@@ -56,4 +56,45 @@
 
 .main-content p {
   @apply text-lg text-gray-700;
+}
+
+/* Jobs List */
+.jobs-list {
+  @apply w-full mt-8;
+}
+
+.jobs-title {
+  @apply text-2xl font-bold mb-4 text-center;
+}
+
+.jobs-container {
+  @apply bg-white p-6 rounded-lg shadow-lg;
+}
+
+.job-card {
+  @apply flex justify-between items-center p-4 mb-4 bg-gray-100 rounded-lg shadow-md;
+}
+
+.job-info h4 {
+  @apply text-xl font-bold;
+}
+
+.job-info p {
+  @apply text-gray-700;
+}
+
+.job-status {
+  @apply px-4 py-2 rounded-full text-white font-bold;
+}
+
+.status-pending {
+  @apply bg-yellow-500;
+}
+
+.status-interview {
+  @apply bg-blue-500;
+}
+
+.status-offered {
+  @apply bg-green-500;
 }

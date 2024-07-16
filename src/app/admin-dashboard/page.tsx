@@ -3,8 +3,9 @@ import { redirect } from 'next/navigation'
 import AdminInfo from './admin-info'
 import { getAdminData } from './actions'
 import { createClient } from '../../../utils/supabase/server'
+import AdminDashboard from './AdminDashboard' // Client-side component
 
-export default async function AdminDashboard() {
+export default async function AdminDashboardPage() {
   const supabase = createClient()
 
   const { data: sessionData, error: sessionError } =
@@ -21,12 +22,16 @@ export default async function AdminDashboard() {
   }
 
   return (
-    <div>
-      <h1>Admin Dashboard</h1>
-      <section>
-        <h2>Admin Info</h2>
-        <AdminInfo profile={profile} organization={organization} />
-      </section>
-    </div>
+    // <div>
+    //   <h1>Admin Dashboard</h1>
+    //   <section>
+    //     <h2>Admin Info</h2>
+    //     <AdminInfo profile={profile} organization={organization} />
+        
+    //   </section>
+    // </div>
+
+    <AdminDashboard profile={profile} organization={organization} />
+
   )
 }
