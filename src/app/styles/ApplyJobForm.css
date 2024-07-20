@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add Job Container */
+.apply-job-container {
+  @apply p-8;
+}
+
+/* Header */
+.hiring-header1 {
+  @apply w-full flex justify-between items-center px-6 py-4 bg-blue-500 mt-4 rounded-t-lg;
+}
+
+.hiring-logo1 {
+  @apply flex items-center;
+}
+
+.hiring-logo1 img {
+  @apply h-10 w-10 mr-3;
+}
+
+.hiring-app-name1 {
+  @apply text-white text-2xl font-bold;
+}
+
+.hiring-user-info1 {
+  @apply flex items-center space-x-4;
+}
+
+/* Back Button */
+.back-button1 {
+    @apply bg-white text-blue-500 py-2 px-4 rounded hover:bg-blue-100 transition duration-300;
+  }
+  
+
+/* Job Header */
+.job-header {
+  @apply flex justify-between items-center mb-4;
+}
+
+/* Job Progress */
+.job-progress {
+  @apply flex items-center space-x-2;
+}
+
+.job-progress p {
+  @apply text-gray-700 font-bold;
+}
+
+.progress-bar {
+  @apply h-2 bg-blue-500 rounded-full;
+}
+
+/* Form Content */
+.form-content {
+  @apply bg-white p-8 rounded-lg shadow-lg mt-4;
+}
+
+.form-content form {
+  @apply flex flex-col space-y-4;
+}
+
+.form-content form label {
+  @apply block text-gray-700 font-bold mb-2;
+}
+
+.form-content form input,
+.form-content form select {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500;
+}
+
+/* Radio Group */
+.radio-group {
+  @apply flex items-center space-x-4;
+}
+
+.radio-group input {
+  @apply mr-2;
+}
+
+
+
+/* Form Buttons */
+.form-buttons {
+  @apply flex justify-between mt-4;
+}
+
+.form-buttons button {
+  @apply bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600;
+}
+
+
+/* Completed Application */
+.completed-application {
+    @apply flex flex-col items-center justify-center mt-8;
+  }
+  
+  .completed-application h3 {
+    @apply text-3xl font-bold mb-4 text-blue-500;
+  }
+  
+  .completed-application p {
+    @apply text-lg text-gray-700;
+}

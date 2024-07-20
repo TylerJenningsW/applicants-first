@@ -16,7 +16,7 @@ const RecruiterDashboard: React.FC = () => {
         
         <div className="user-info-recruiter">
           <span>Hello, Recruiter</span>
-          <Link href="/login-form"><button className="logout-button">Log Out</button></Link>
+          <Link href="/login"><button className="logout-button">Log Out</button></Link>
         </div>
       </header>
       <div className="nav-container-recruiter">
