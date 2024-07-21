@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
@@ -28,26 +28,24 @@ const RegisterForm: React.FC = () => {
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(RegisterFormValidation),
-  })
+  });
 
   const onSubmit = async (data: RegisterFormValues) => {
-    const formData = new FormData()
-    formData.append('firstName', data.firstName)
-    formData.append('lastName', data.lastName)
-    formData.append('email', data.email)
-    formData.append('phoneNumber', data.phoneNumber)
-    formData.append('password', data.password)
-    formData.append('role', role)
-    if (role === null || role === '') {
-      role = 'Recruiter'
-    }
+    const formData = new FormData();
+    formData.append('firstName', data.firstName);
+    formData.append('lastName', data.lastName);
+    formData.append('email', data.email);
+    formData.append('phoneNumber', data.phoneNumber);
+    formData.append('password', data.password);
+    formData.append('role', role);
+
     try {
       await signup(formData)
       toast.success('Please verify your email!');
       setModalIsOpen(true);
     } catch (error) {
-      console.error('Signup failed', error)
-      setError('Signup failed')
+      console.error('Signup failed', error);
+      setError('Signup failed');
     }
   }
 
@@ -159,7 +157,7 @@ const RegisterForm: React.FC = () => {
       
 
     </div>
-  )
-}
+  );
+};
 
-export default RegisterForm
+export default RegisterForm;
