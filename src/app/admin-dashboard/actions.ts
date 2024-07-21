@@ -1,6 +1,6 @@
 'use server'
 
-import { getServerClient } from '../../../utils/supabase/supabaseClient'
+import prisma from '../../../utils/prisma/prismaClient'
 import { Organization, Profile } from '../../../utils/types'
 
 interface AdminData {
@@ -9,29 +9,35 @@ interface AdminData {
 }
 
 export async function getAdminData(adminId: string): Promise<AdminData> {
-  const supabase = getServerClient()
+  try {
+    const profile = await prisma.profile.findUnique({
+      where: { id: adminId },
+      select: {
+        id: true,
+        first_name: true,
+        last_name: true,
+        organization_id: true,
+      },
+    });
 
-  const { data: profile, error: profileError } = await supabase
-    .from('profiles')
-    .select('id, first_name, last_name, organization_id')
-    .eq('id', adminId)
-    .single()
+    if (!profile) {
+      console.error('Profile not found');
+      return { profile: null, organization: null };
+    }
 
-  if (profileError) {
-    console.error(profileError)
-    return { profile: null, organization: null }
+    const organization = profile.organization_id
+      ? await prisma.organization.findUnique({
+          where: { OrganizationID: profile.organization_id },
+          select: {
+            OrganizationID: true,
+            OrganizationName: true,
+          },
+        })
+      : null;
+
+    return { profile, organization };
+  } catch (error) {
+    console.error('Error fetching admin data:', error);
+    return { profile: null, organization: null };
   }
-
-  const { data: organization, error: organizationError } = await supabase
-    .from('organization') // Corrected table name
-    .select('organizationid, organizationname') // Corrected column name
-    .eq('organizationid', profile.organization_id)
-    .single()
-
-  if (organizationError) {
-    console.error('Error fetching organization:', organizationError)
-    return { profile, organization: null }
-  }
-
-  return { profile, organization }
 }

@@ -58,7 +58,7 @@ export async function login(formData: FormData) {
     } else if (role === 'Recruiter') {
       return redirect('/recruiter-dashboard')
     } else {
-      return redirect('/')
+      return redirect('/applicant-dashboard')
     }
   }
 }

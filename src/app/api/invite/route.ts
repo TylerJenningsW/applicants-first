@@ -1,43 +1,42 @@
 import { Resend } from 'resend'
 import crypto from 'crypto' // Import the crypto module
 import { getServerClient } from '../../../../utils/supabase/supabaseClient'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextResponse } from 'next/server'
+import prisma from '../../../../utils/prisma/prismaClient'
 
 const resend = new Resend(process.env.RESEND_API_KEY!)
-const supabase = getServerClient()
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === 'POST') {
-    const { email, organizationId } = req.body
 
-    // Generate invitation token
-    const token = crypto.randomBytes(32).toString('hex')
-    const expirationDate = new Date()
-    expirationDate.setHours(expirationDate.getHours() + 24) // Token valid for 24 hours
+export async function POST(req: Request) {
+  const { email, organizationId } = await req.json();
 
-    // Save the token and email in the database
-    const { error } = await supabase
-      .from('invitations')
-      .insert([{ email, token, organizationId, expires_at: expirationDate }])
+  // Generate invitation token
+  const token = crypto.randomBytes(32).toString('hex');
+  const expirationDate = new Date();
+  expirationDate.setHours(expirationDate.getHours() + 24); // Token valid for 24 hours
 
-    if (error) {
-      res.status(500).json({ error: 'Failed to create invitation' })
-      return
-    }
-
+  try {
+    // Save the token and email in the database using Prisma
+    const invitation = await prisma.invitations.create({
+      data: {
+        email,
+        token,
+        organizationId: parseInt(organizationId),
+        expires_at: expirationDate,
+      },
+    });
+    
     // Send invitation email
-    const invitationLink = `${process.env.NEXT_PUBLIC_URL}/accept-invitation?token=${token}`
+    const invitationLink = `${process.env.NEXT_PUBLIC_URL}/accept-invitation?token=${token}`;
     const emailResponse = await resend.emails.send({
       to: email,
       from: 'team@applicants1st.com',
       subject: 'You are invited to join our organization',
       html: `<p>Click the link to accept the invitation: <a href="${invitationLink}">${invitationLink}</a></p>`,
-    })
+    });
 
-    res.status(200).json({ message: 'Invitation sent', emailResponse })
-  } else {
-    res.status(405).json({ error: 'Method not allowed' })
+    return NextResponse.json({ message: 'Invitation sent', emailResponse });
+  } catch (error) {
+    console.error('Error creating invitation:', error);
+    return NextResponse.json({ error: 'Failed to create invitation' }, { status: 500 });
   }
 }
