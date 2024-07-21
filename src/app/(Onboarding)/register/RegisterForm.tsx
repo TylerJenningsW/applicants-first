@@ -1,46 +1,45 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import { useSearchParams } from 'next/navigation'
-import '@/app/styles/Register.css'
-import { useForm } from 'react-hook-form'
-import { RegisterFormValues } from '../../../../utils/types'
-import { RegisterFormValidation } from '../../../../utils/validation'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { signup } from './actions'
-import { useFormStatus } from 'react-dom'
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import '@/app/styles/Register.css';
+import { useForm } from 'react-hook-form';
+import { RegisterFormValues } from '../../../../utils/types';
+import { RegisterFormValidation } from '../../../../utils/validation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signup } from './actions';
+import { useFormStatus } from 'react-dom';
 
 const RegisterForm: React.FC = () => {
-  const { pending } = useFormStatus()
-  const [error, setError] = useState<string | null>(null)
-  const searchParams = useSearchParams()
-  let role = searchParams.get('role') as string
+  const { pending } = useFormStatus();
+  const [error, setError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const role = searchParams.get('role') || 'Recruiter'; // Default role if none provided
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(RegisterFormValidation),
-  })
+  });
 
   const onSubmit = async (data: RegisterFormValues) => {
-    const formData = new FormData()
-    formData.append('firstName', data.firstName)
-    formData.append('lastName', data.lastName)
-    formData.append('email', data.email)
-    formData.append('phoneNumber', data.phoneNumber)
-    formData.append('password', data.password)
-    formData.append('role', role)
-    if (role === null || role === '') {
-      role = 'Recruiter'
-    }
+    const formData = new FormData();
+    formData.append('firstName', data.firstName);
+    formData.append('lastName', data.lastName);
+    formData.append('email', data.email);
+    formData.append('phoneNumber', data.phoneNumber);
+    formData.append('password', data.password);
+    formData.append('role', role);
+
     try {
-      await signup(formData)
+      await signup(formData);
     } catch (error) {
-      console.error('Signup failed', error)
-      setError('Signup failed')
+      console.error('Signup failed', error);
+      setError('Signup failed');
     }
-  }
+  };
 
   return (
     <div className="register-container">
@@ -121,8 +120,9 @@ const RegisterForm: React.FC = () => {
           Register
         </button>
       </form>
+      {error && <p className="error">{error}</p>}
     </div>
-  )
-}
+  );
+};
 
-export default RegisterForm
+export default RegisterForm;

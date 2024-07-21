@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import AdminInfo from './admin-info'
 import { getAdminData } from './actions'
 import { createClient } from '../../../utils/supabase/server'
+import ProtectedRoute from '../components/ProtectedRoute'
 
 export default async function AdminDashboard() {
   const supabase = createClient()
@@ -21,12 +22,12 @@ export default async function AdminDashboard() {
   }
 
   return (
-    <div>
+    <ProtectedRoute>
       <h1>Admin Dashboard</h1>
       <section>
         <h2>Admin Info</h2>
         <AdminInfo profile={profile} organization={organization} />
       </section>
-    </div>
+    </ProtectedRoute>
   )
 }

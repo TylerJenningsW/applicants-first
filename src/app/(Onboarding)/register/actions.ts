@@ -1,20 +1,23 @@
-'use server'
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
-import { getServerClient } from '../../../../utils/supabase/supabaseClient'
+'use server';
 
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+import { getServerClient } from '../../../../utils/supabase/supabaseClient';
+import prisma from '../../../../utils/prisma/prismaClient';
 export async function signup(formData: FormData) {
-  const supabase = getServerClient()
+  const supabase = getServerClient();
 
   // Extract form data
   const data = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
     phoneNumber: formData.get('phoneNumber') as string,
-  }
+    firstName: formData.get('firstName') as string,
+    lastName: formData.get('lastName') as string,
+    role: formData.get('role') as string,
+  };
 
-  // Sign up the user with user_metadata
-  
+  // Sign up the user with Supabase Auth
   const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
     email: data.email,
     password: data.password,
@@ -23,75 +26,62 @@ export async function signup(formData: FormData) {
         phone: data.phoneNumber,
       },
     },
-  })
-  
-  // Log the response for debugging
-  console.log('Sign Up Data:', signUpData)
-  console.log('Sign Up Error:', signUpError)
-  
+  });
+
   if (signUpError || !signUpData?.user) {
-    console.error(signUpError || 'User object is null')
-    return redirect('/error')
+    console.error(signUpError || 'User object is null');
+    return redirect('/error');
   }
   
-  const user = signUpData.user
-  
-  // Extract additional information
-  const role = formData.get('role') as string // 'Administrator', 'Recruiter', or 'Client'
-  const firstName = formData.get('firstName') as string
-  const lastName = formData.get('lastName') as string
+  const user = signUpData.user;
 
   // Create organization if the user is an Administrator
-  let organizationId = null
-  if (role === 'Administrator') {
+  let organizationId = null;
+  if (data.role === 'Administrator') {
     try {
-      organizationId = await createOrganization(firstName, lastName)
+      organizationId = await createOrganization(data.firstName, data.lastName);
     } catch (orgError) {
-      console.error('Failed to create organization:', orgError)
-      return redirect('/error')
+      console.error('Failed to create organization:', orgError);
+      return redirect('/error');
     }
   }
 
-  // Insert user profile
-  const { error: profileError } = await supabase.from('profiles').insert({
-    id: user.id,
-    role,
-    first_name: firstName,
-    last_name: lastName,
-    organization_id: organizationId,
-    creation_date: new Date().toISOString(),
-    last_login_date: new Date().toISOString(),
-  })
-
-  if (profileError) {
-    console.error(profileError)
-    return redirect('/error')
+  // Insert user profile using Prisma
+  try {
+    await prisma.profile.create({
+      data: {
+        id: user.id,
+        role: data.role,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        organization_id: organizationId,
+        creation_date: new Date(),
+        last_login_date: new Date(),
+      },
+    });
+  } catch (profileError) {
+    console.error(profileError);
+    return redirect('/error');
   }
-  
 
   // Revalidate and redirect
-  revalidatePath('/')
-  return redirect('/login')
+  revalidatePath('/');
+  return redirect('/login');
 }
 
 export async function createOrganization(firstName: string, lastName: string) {
-  const supabase = getServerClient()
+  // Insert new organization and retrieve the generated organizationId using Prisma
+  try {
+    const org = await prisma.organization.create({
+      data: {
+        OrganizationName: `${firstName} ${lastName}'s Organization`,
+        CreationDate: new Date(),
+      },
+    });
 
-  // Insert new organization and retrieve the generated organizationid
-  const { data: orgData, error: orgError } = await supabase
-    .from('organization')
-    .insert({
-      organizationname: `${firstName} ${lastName}'s Organization`,
-      creationdate: new Date().toISOString(), // Add the current date for creationdate
-    })
-    .select('organizationid')
-    .single()
-
-  if (orgError) {
-    console.error(orgError)
-    throw new Error('Failed to create organization')
+    return org.OrganizationID;
+  } catch (orgError) {
+    console.error(orgError);
+    throw new Error('Failed to create organization');
   }
-
-  // Return the generated organizationid
-  return orgData?.organizationid
 }
