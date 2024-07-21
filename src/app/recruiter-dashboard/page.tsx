@@ -10,6 +10,7 @@ export default function RecruiterDashBoard() {
   useEffect(() => {
     const getJobs = async () => {
       const jobList = await fetchJobs()
+      console.log(JSON.stringify(jobList))
       setJobs(jobList)
       setLoading(false)
     }
@@ -25,10 +26,10 @@ export default function RecruiterDashBoard() {
       ) : (
         <div>
           {jobs.map((job) => (
-            <div key={job.id} className="border p-4 mb-4 rounded">
-              <h2 className="text-xl font-bold">{job.job_title}</h2>
-              <p>{job.job_description}</p>
-              <p>{new Date(job.created_at).toLocaleDateString()}</p>
+            <div key={job.JobID} className="border p-4 mb-4 rounded">
+              <h2 className="text-xl font-bold">{job.JobTitle}</h2>
+              <p>{job.JobDescription}</p>
+              <p>{new Date(job.PostedDate).toLocaleDateString()}</p>
             </div>
           ))}
         </div>

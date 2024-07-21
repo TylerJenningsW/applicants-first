@@ -1,24 +1,43 @@
-import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
-import { getServerClient } from '../../../utils/supabase/supabaseClient'
+'use client';
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = async ({
-  children,
-}) => {
-  const supabase = getServerClient()
-  const router = useRouter()
-    const user = await supabase.auth.user()
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { getBrowserClient } from '../../../utils/supabase/supaBaseBrowserClient';
+
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const router = useRouter();
+  const supabase = getBrowserClient();
+
   useEffect(() => {
-    if (!user) {
-      router.push('/login') // Redirect to login page if not authenticated
-    }
-  }, [user, router])
+    const checkUser = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
 
-  if (!user) {
-    return null // Prevent rendering the protected content before redirect
+      if (error) {
+        console.error('Error fetching session:', error.message);
+      }
+
+      if (!session?.user) {
+        router.push('/login'); // Redirect to login page if not authenticated
+      } else {
+        setUser(session.user);
+      }
+      setLoading(false);
+    };
+
+    checkUser();
+  }, [router, supabase]);
+
+  if (loading) {
+    return <p>Loading...</p>; // Show a loading message while checking auth status
   }
 
-  return <>{children}</>
-}
+  if (!user) {
+    return null; // Prevent rendering the protected content before redirect
+  }
 
-export default ProtectedRoute
+  return <>{children}</>;
+};
+
+export default ProtectedRoute;

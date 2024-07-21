@@ -1,17 +1,14 @@
 'use server'
+import prisma from '../../../utils/prisma/prismaClient';
 import { getServerClient } from '../../../utils/supabase/supabaseClient'
 
 export default async function fetchJobs() {
-  const supabase = getServerClient()
-
-  const { data, error } = await supabase
-    .from('jobs')
-    .select('*')
-    .order('created_at', { ascending: false })
-  if (error) {
-    console.error('Error fetching jobs:', error)
-    return []
-  } else {
-    return data ?? []
+  try {
+    const jobs = await prisma.job.findMany({
+    });
+    return jobs;
+  } catch (error) {
+    console.error('Error fetching jobs:', error);
+    return [];
   }
 }

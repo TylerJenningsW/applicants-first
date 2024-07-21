@@ -5,37 +5,38 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url               = env("DATABASE_URL")
-  directUrl         = env("DIRECT_URL")
-  schemas           = ["public"]
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas   = ["public"]
 }
 
 model Applicant {
-  applicantid             Int       @id @default(autoincrement())
-  fullname                String
-  emailaddress            String
-  alternateemailaddress   String?
-  streetaddress           String?
-  city                    String?
-  state                   String?
-  zipcode                 String?
-  country                 String?
-  linkedinurl             String?
-  uscitizen               Boolean?
-  educationlevel          String?
-  specialty               String?
-  dateaddedtodb           DateTime
+  applicantid           Int      @id @default(autoincrement())
+  fullname              String
+  emailaddress          String
+  alternateemailaddress String?
+  streetaddress         String?
+  city                  String?
+  state                 String?
+  zipcode               String?
+  country               String?
+  linkedinurl           String?
+  uscitizen             Boolean?
+  educationlevel        String?
+  specialty             String?
+  dateaddedtodb         DateTime
+
   @@schema("public")
 }
 
 model Organization {
-  OrganizationID   Int        @id @default(autoincrement())
+  OrganizationID   Int           @id @default(autoincrement())
   OrganizationName String
   CreationDate     DateTime
   SubscriptionType String?
@@ -43,48 +44,52 @@ model Organization {
   jobs             Job[]
   profiles         Profile[]
   invitations      Invitations[]
+
   @@schema("public")
 }
 
 model Profile {
-  id               String     @id @default(uuid())
-  role             String
-  first_name       String?
-  last_name        String?
-  organization_id  Int?
-  is_locked_out    Boolean?
-  creation_date    DateTime   @default(now())
-  last_login_date  DateTime?
-  organization     Organization? @relation(fields: [organization_id], references: [OrganizationID])
-  jobs             Job[]
+  id              String        @id @default(uuid())
+  role            String
+  first_name      String?
+  last_name       String?
+  organization_id Int?
+  is_locked_out   Boolean?
+  creation_date   DateTime      @default(now())
+  last_login_date DateTime?
+  organization    Organization? @relation(fields: [organization_id], references: [OrganizationID])
+  jobs            Job[]
+
   @@schema("public")
 }
 
 model Invitations {
-  id              Int        @id @default(autoincrement())
-  email           String
-  token           String
-  organizationId  Int
-  expires_at      DateTime
-  created_at      DateTime   @default(now())
-  organization    Organization @relation(fields: [organizationId], references: [OrganizationID])
+  id             Int          @id @default(autoincrement())
+  email          String
+  token          String
+  organizationId Int
+  expires_at     DateTime
+  created_at     DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [OrganizationID])
+
   @@schema("public")
 }
 
 model Job {
-  JobID                    Int        @id @default(autoincrement())
-  OrganizationID           Int
-  UserID                   String
-  JobTitle                 String
-  JobAddressLocation       String
-  PostedDate               DateTime
-  JobSalary                String
-  JobStatus                String
-  CandidateResponseCount   Int
-  TotalApplicantsCount     Int
-  JobDescription           String
-  ApplicationDeadline      DateTime
-  organization             Organization @relation(fields: [OrganizationID], references: [OrganizationID])
-  profile                  Profile      @relation(fields: [UserID], references: [id])
+  JobID                  Int           @id @default(autoincrement())
+  OrganizationID         Int?
+  UserID                 String
+  JobTitle               String
+  JobAddressLocation     String
+  PostedDate             DateTime      @default(now())
+  JobSalary              String
+  JobStatus              String
+  CandidateResponseCount Int
+  TotalApplicantsCount   Int
+  JobDescription         String
+  ApplicationDeadline    DateTime
+  organization           Organization? @relation(fields: [OrganizationID], references: [OrganizationID])
+  profile                Profile       @relation(fields: [UserID], references: [id])
+
   @@schema("public")
 }
