@@ -1,12 +1,11 @@
 import { Resend } from 'resend'
 import crypto from 'crypto' // Import the crypto module
-import { getServerClient } from '../../../../utils/supabase/supabaseClient'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import prisma from '../../../../utils/prisma/prismaClient'
 
 const resend = new Resend(process.env.RESEND_API_KEY!)
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const { email, organizationId } = await req.json();
 
   // Generate invitation token
@@ -20,11 +19,11 @@ export async function POST(req: Request) {
       data: {
         email,
         token,
-        organizationId: parseInt(organizationId),
+        organizationId: parseInt(organizationId, 10),
         expires_at: expirationDate,
       },
     });
-    
+
     // Send invitation email
     const invitationLink = `${process.env.NEXT_PUBLIC_URL}/accept-invitation?token=${token}`;
     const emailResponse = await resend.emails.send({
