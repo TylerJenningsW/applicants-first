@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 
 import '@/app/styles/RoleManagement.css' // Import the CSS file
 import { useRouter } from 'next/navigation'
