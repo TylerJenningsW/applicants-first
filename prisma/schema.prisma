@@ -76,20 +76,21 @@ model Invitations {
 }
 
 model Job {
-  JobID                  Int           @id @default(autoincrement())
-  OrganizationID         Int?
-  UserID                 String
-  JobTitle               String
-  JobAddressLocation     String
-  PostedDate             DateTime      @default(now())
-  JobSalary              String
-  JobStatus              String
-  CandidateResponseCount Int
-  TotalApplicantsCount   Int
-  JobDescription         String
-  ApplicationDeadline    DateTime
-  organization           Organization? @relation(fields: [OrganizationID], references: [OrganizationID])
-  profile                Profile       @relation(fields: [UserID], references: [id])
-
+  JobID                    Int          @id @default(autoincrement())
+  OrganizationID           Int?
+  UserID                   String
+  JobTitle                 String
+  JobAddressLocation       String
+  PostedDate               DateTime     @default(now())
+  JobSalary                String
+  JobStatus                String
+  CandidateResponseCount   Int
+  TotalApplicantsCount     Int
+  JobDescription           String
+  ApplicationDeadline      DateTime
+  organization             Organization? @relation(fields: [OrganizationID], references: [OrganizationID])
+  profile                  Profile       @relation(fields: [UserID], references: [id])
+  Slug                     String?       @unique
   @@schema("public")
 }
+

@@ -16,7 +16,7 @@ const AdminInfo: React.FC<AdminInfoProps> = ({ profile, organization }) => {
           Name: {profile.first_name} {profile.last_name}
         </p>
       )}
-      {organization && <p>Organization: {organization.organizationname}</p>}
+      {organization && <p>Organization: {organization.OrganizationName}</p>}
     </div>
   )
 }
