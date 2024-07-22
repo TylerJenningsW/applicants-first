@@ -1,15 +1,6 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { supabase } from "../../supabaseClient";
-
-interface Job {
-  id: number;
-  title: string;
-  description: string;
-  company: string;
-  location: string;
-  created_at: string;
-}
+import { getBrowserClient } from "../../../utils/supabase/supaBaseBrowserClient";
+import prisma from "../../../utils/prisma/prismaClient";
 
 interface Application {
   id: number;
@@ -25,52 +16,52 @@ const Dashboard = () => {
   const [job, setJob] = useState<Job | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
+  const supabase = getBrowserClient();
 
-  // Fetch job details
-  useEffect(() => {
-    if (slug) {
-      const fetchJob = async () => {
-        const { data: job, error } = await supabase
-          .from("jobs")
-          .select("*")
-          .eq("id", slug)
-          .single();
-        if (error) {
-          console.error("Error fetching job:", error);
-        } else {
-          setJob(job);
-        }
-      };
-      fetchJob();
-    }
-  }, [slug]);
-
-  // Fetch applications
   useEffect(() => {
     const fetchApplications = async () => {
-      const user = supabase.auth.user(); //    user authentication set up
+      const { data: { user }, error } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error("Error fetching user:", error);
+        setLoading(false);
+        return;
+      }
 
       if (user) {
-        const { data, error } = await supabase
-          .from("applicant")
-          .select("id, fullname, created_at, application_status, jobs(title)")
-          .eq("emailaddress", user.email); //  email is used to link applicants to users
+        try {
+          const applicants = await prisma.applicant.findMany({
+            where: { emailaddress: user.email },
+            select: {
+              applicantid: true,
+              fullname: true,
+              dateaddedtodb: true,
+              job: {
+                select: {
+                  JobTitle: true,
+                },
+              },
+            },
+          });
 
-        if (error) {
-          console.error("Error fetching applications:", error);
-        } else {
-          const formattedData = data.map((app: any) => ({
-            ...app,
-            job_title: app.jobs.title,
+          const formattedData = applicants.map((applicant: any) => ({
+            id: applicant.applicantid,
+            fullname: applicant.fullname,
+            job_title: applicant.job?.JobTitle || "Unknown Job",
+            application_status: "Pending", // Replace with actual status if available
+            created_at: applicant.dateaddedtodb.toISOString(),
           }));
+
           setApplications(formattedData);
+        } catch (error) {
+          console.error("Error fetching applications:", error);
         }
       }
       setLoading(false);
     };
 
     fetchApplications();
-  }, []);
+  }, [supabase]);
 
   if (loading) {
     return <div>Loading...</div>;

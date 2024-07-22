@@ -30,7 +30,9 @@ model Applicant {
   uscitizen             Boolean?
   educationlevel        String?
   specialty             String?
-  dateaddedtodb         DateTime
+  dateaddedtodb         DateTime @default(now())
+  job_id                Int
+  job                   Job      @relation(fields: [job_id], references: [JobID])
 
   @@schema("public")
 }
@@ -90,6 +92,8 @@ model Job {
   ApplicationDeadline    DateTime
   organization           Organization? @relation(fields: [OrganizationID], references: [OrganizationID])
   profile                Profile       @relation(fields: [UserID], references: [id])
+  applicants             Applicant[]
+  Slug                   String?       @unique
 
   @@schema("public")
 }

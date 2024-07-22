@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { supabase } from "../../../supabaseClient";
+import prisma from "../../../../utils/prisma/prismaClient";
 
 const ApplyPage = () => {
   const router = useRouter();
@@ -18,26 +18,35 @@ const ApplyPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { data, error } = await supabase.from("applicant").insert([
-      {
-        fullname,
-        emailaddress,
-        alternateemailaddress,
-        streetaddress,
-        city,
-        state,
-        zipcode,
-        country,
-        linkedinurl,
-        job_id: slug,
-      },
-    ]);
+    try {
+      const job = await prisma.job.findUnique({
+        where: { Slug: slug as string },
+        select: { JobID: true },
+      });
 
-    if (error) {
+      if (!job) {
+        throw new Error("Job not found");
+      }
+
+      const applicant = await prisma.applicant.create({
+        data: {
+          fullname,
+          emailaddress,
+          alternateemailaddress,
+          streetaddress,
+          city,
+          state,
+          zipcode,
+          country,
+          linkedinurl,
+          job_id: job.JobID,
+        },
+      });
+
+      console.log("Applicant inserted:", applicant);
+      router.push(`/jobs/${slug}`);
+    } catch (error) {
       console.error("Error inserting applicant:", error);
-    } else {
-      console.log("Applicant inserted:", data);
-      router.push(`/Jobs/${slug}`);
     }
   };
 

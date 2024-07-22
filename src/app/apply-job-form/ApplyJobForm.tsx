@@ -89,7 +89,7 @@ const ApplyJobForm: React.FC = () => {
                 <option>Advanced</option>
                 <option>Fluent</option>
               </select>
-              <label>Do you have a Bachelor's Degree?</label>
+              <label>Do you have a Bachelor&apos;s Degree?</label>
               <div className="radio-group">
                 <label className="radio-label">Yes
                   <input type="radio" id="yes" name="degree" value="Yes" />
