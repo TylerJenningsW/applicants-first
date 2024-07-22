@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../../supabaseClient";
+import { getBrowserClient } from "../../../utils/supabase/supaBaseBrowserClient";
+import prisma from "../../../utils/prisma/prismaClient";
 
 interface Application {
   id: number;
@@ -12,32 +13,52 @@ interface Application {
 const Dashboard = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
+  const supabase = getBrowserClient();
 
   useEffect(() => {
     const fetchApplications = async () => {
-      const user = supabase.auth.user(); // Assuming you have user authentication set up
+      const { data: { user }, error } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error("Error fetching user:", error);
+        setLoading(false);
+        return;
+      }
 
       if (user) {
-        const { data, error } = await supabase
-          .from("applicant")
-          .select("id, fullname, created_at, application_status, jobs(title)")
-          .eq("emailaddress", user.email); // assuming email is used to link applicants to users
+        try {
+          const applicants = await prisma.applicant.findMany({
+            where: { emailaddress: user.email },
+            select: {
+              applicantid: true,
+              fullname: true,
+              dateaddedtodb: true,
+              job: {
+                select: {
+                  JobTitle: true,
+                },
+              },
+            },
+          });
 
-        if (error) {
-          console.error("Error fetching applications:", error);
-        } else {
-          const formattedData = data.map((app: any) => ({
-            ...app,
-            job_title: app.jobs.title,
+          const formattedData = applicants.map((applicant: any) => ({
+            id: applicant.applicantid,
+            fullname: applicant.fullname,
+            job_title: applicant.job?.JobTitle || "Unknown Job",
+            application_status: "Pending", // Replace with actual status if available
+            created_at: applicant.dateaddedtodb.toISOString(),
           }));
+
           setApplications(formattedData);
+        } catch (error) {
+          console.error("Error fetching applications:", error);
         }
       }
       setLoading(false);
     };
 
     fetchApplications();
-  }, []);
+  }, [supabase]);
 
   if (loading) {
     return <div>Loading...</div>;
