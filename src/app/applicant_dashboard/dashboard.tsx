@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { getBrowserClient } from "../../../utils/supabase/supaBaseBrowserClient";
 import prisma from "../../../utils/prisma/prismaClient";
-
+import { useRouter } from "next/router";
+interface Job {
+  id: number;
+  title: string;
+  description: string;
+  company: string;
+  location: string;
+  created_at: string;
+}
 interface Application {
   id: number;
   fullname: string;
@@ -12,7 +20,7 @@ interface Application {
 
 const Dashboard = () => {
   const router = useRouter();
-  const { slug } = router.query;
+  const { slug } = router.query as { slug: string };
   const [job, setJob] = useState<Job | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
