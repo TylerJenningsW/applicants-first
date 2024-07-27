@@ -1,25 +1,28 @@
-"use client";
+'use client'
 import React, { useEffect, useState } from 'react'
 import fetchJobs from './actions'
-import Link from 'next/link';
+import Link from 'next/link'
 
 interface Applicant {
   applicant: {
-    fullname: string;
-    emailaddress: string;
-  };
+    fullname: string
+    emailaddress: string
+  }
 }
 
 interface Job {
-  JobID: number;
-  JobTitle: string;
-  JobDescription: string;
-  PostedDate: string;
-  Slug: string;
+  JobID: number
+  JobTitle: string
+  JobDescription: string
+  PostedDate: string
+  Slug: string
   organization: {
-    OrganizationName: string;
-  } | null;
-  applicants: Applicant[];
+    OrganizationName: string
+  } | null
+  applicants: {
+    fullname: string
+    emailaddress: string
+  }[]
 }
 
 export default function RecruiterDashBoard() {
@@ -39,7 +42,12 @@ export default function RecruiterDashBoard() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Recruiter Dashboard</h1>
-      <Link href="/post-job" className="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">Post a New Job</Link>
+      <Link
+        href="/post-job"
+        className="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block"
+      >
+        Post a New Job
+      </Link>
       {loading ? (
         <p>Loading jobs...</p>
       ) : (
@@ -49,18 +57,28 @@ export default function RecruiterDashBoard() {
               <h2 className="text-xl font-bold">{job.JobTitle}</h2>
               <p>{job.JobDescription}</p>
               <p>Posted on: {new Date(job.PostedDate).toLocaleDateString()}</p>
-              <p>Company: {job.organization?.OrganizationName || "Unknown Company"}</p>
+              <p>
+                Company:{' '}
+                {job.organization?.OrganizationName || 'Unknown Company'}
+              </p>
               <h3 className="font-bold mt-2">Applicants:</h3>
-              {job.applicants && (
+              {job.applicants && job.applicants.length > 0 ? (
                 <ul>
                   {job.applicants.map((app, index) => (
                     <li key={index}>
-                      {app.applicant.fullname} ({app.applicant.emailaddress})
+                      {app.fullname} ({app.emailaddress})
                     </li>
                   ))}
                 </ul>
-              )} 
-              <Link href={`/jobs/${job.Slug}`} className="text-blue-500 hover:underline">View Job</Link>
+              ) : (
+                <p>No applicants yet</p>
+              )}
+              <Link
+                href={`/jobs/${job.Slug}`}
+                className="text-blue-500 hover:underline"
+              >
+                View Job
+              </Link>
             </div>
           ))}
         </div>

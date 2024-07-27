@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router";
-import prisma from "../../../../../utils/prisma/prismaClient";
+'use client'
+
+import React, { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 
 const ApplyPage = () => {
   const router = useRouter();
-  const { slug } = router.query;
+  const params = useParams();
+  const slug = params.slug as string;
   const [fullname, setFullname] = useState("");
   const [emailaddress, setEmailaddress] = useState("");
   const [alternateemailaddress, setAlternateEmailaddress] = useState("");
@@ -14,22 +16,37 @@ const ApplyPage = () => {
   const [zipcode, setZipcode] = useState("");
   const [country, setCountry] = useState("");
   const [linkedinurl, setLinkedinurl] = useState("");
+  const [jobId, setJobId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchJobId = async () => {
+      const response = await fetch(`/api/jobs/${slug}`);
+      if (response.ok) {
+        const job = await response.json();
+        setJobId(job.JobID);
+      } else {
+        console.error('Failed to fetch job');
+      }
+    };
+
+    fetchJobId();
+  }, [slug]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!jobId) {
+      console.error("Job ID not found");
+      return;
+    }
+
     try {
-      const job = await prisma.job.findUnique({
-        where: { Slug: slug as string },
-        select: { JobID: true },
-      });
-
-      if (!job) {
-        throw new Error("Job not found");
-      }
-
-      const applicant = await prisma.applicant.create({
-        data: {
+      const response = await fetch('/api/apply', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           fullname,
           emailaddress,
           alternateemailaddress,
@@ -39,14 +56,19 @@ const ApplyPage = () => {
           zipcode,
           country,
           linkedinurl,
-          job_id: job.JobID,
-        },
+          jobId,
+        }),
       });
 
-      console.log("Applicant inserted:", applicant);
-      router.push(`/jobs/${slug}`);
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Application submitted:", result);
+        router.push(`/jobs/${slug}`);
+      } else {
+        throw new Error("Failed to submit application");
+      }
     } catch (error) {
-      console.error("Error inserting applicant:", error);
+      console.error("Error submitting application:", error);
     }
   };
 
