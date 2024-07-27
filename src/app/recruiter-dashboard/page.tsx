@@ -30,6 +30,8 @@ export default function RecruiterDashBoard() {
               <h2 className="text-xl font-bold">{job.JobTitle}</h2>
               <p>{job.JobDescription}</p>
               <p>{new Date(job.PostedDate).toLocaleDateString()}</p>
+              <p>{job.organization?.OrganizationName || "Unknown Company"}</p>
+              <Link href={`/jobs/${job.Slug}`}> View Job</Link>
             </div>
           ))}
         </div>

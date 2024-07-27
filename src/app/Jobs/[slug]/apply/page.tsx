@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import prisma from "../../../../utils/prisma/prismaClient";
+import prisma from "../../../../../utils/prisma/prismaClient";
 
 const ApplyPage = () => {
   const router = useRouter();
