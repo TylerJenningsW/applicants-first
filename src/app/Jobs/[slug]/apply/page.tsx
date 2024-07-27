@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import prisma from "../../../../../utils/prisma/prismaClient";
 
 const ApplyPage = () => {
   const router = useRouter();
@@ -19,17 +18,19 @@ const ApplyPage = () => {
     e.preventDefault();
 
     try {
-      const job = await prisma.job.findUnique({
-        where: { Slug: slug as string },
-        select: { JobID: true },
-      });
+      const jobResponse = await fetch(`/api/jobs/${slug}`);
+      const jobData = await jobResponse.json();
 
-      if (!job) {
+      if (!jobData.data) {
         throw new Error("Job not found");
       }
 
-      const applicant = await prisma.applicant.create({
-        data: {
+      const applicantResponse = await fetch("/api/apply", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           fullname,
           emailaddress,
           alternateemailaddress,
@@ -39,11 +40,17 @@ const ApplyPage = () => {
           zipcode,
           country,
           linkedinurl,
-          job_id: job.JobID,
-        },
+          jobId: jobData.data.JobID,
+        }),
       });
 
-      console.log("Applicant inserted:", applicant);
+      if (!applicantResponse.ok) {
+        throw new Error("Error submitting application");
+      }
+
+      const applicantData = await applicantResponse.json();
+      console.log("Applicant inserted:", applicantData);
+
       router.push(`/jobs/${slug}`);
     } catch (error) {
       console.error("Error inserting applicant:", error);

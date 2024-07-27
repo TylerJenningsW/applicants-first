@@ -1,98 +1,42 @@
-'use client'
+'use client';
 
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
-import Link from 'next/link'
+import { useRouter } from "next/navigation";
+import prisma from '../../../../utils/prisma/prismaClient'
 
-interface Job {
-  JobID: number
-  JobTitle: string
-  JobDescription: string
-  JobAddressLocation: string
-  PostedDate: string
-  JobSalary: string
-  ApplicationDeadline: string
-  CompanyName: string
-}
-
-const JobPage = () => {
-  const params = useParams()
-  const {slug} = params
-  const [job, setJob] = useState<Job | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    console.log(slug)
-
-    const fetchJob = async () => {
-      if (!slug) return
-
-      console.log('Fetching job with slug:', slug)
-      try {
-        const response = await fetch(`http://localhost:3000/api/jobs/${slug}`)
-        console.log('API response status:', response.status)
-
-        if (!response.ok) {
-          const errorText = await response.text()
-          console.error('API error response:', errorText)
-          throw new Error('Failed to fetch job')
-        }
-
-        const jobData = await response.json()
-        console.log('Received job data:', jobData)
-        setJob(jobData)
-      } catch (error) {
-        console.error('Error fetching job:', error)
-        setError('Failed to load job details')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchJob()
-  }, [slug])
-
-  if (loading) {
-    return <div>Loading...</div>
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>
-  }
+async function getJob(slug: string) {
+  const job = await prisma.job.findUnique({
+    where: { Slug: slug },
+  });
 
   if (!job) {
-    return <div>Job not found</div>
+    throw new Error("Job not found");
   }
 
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">{job.JobTitle}</h1>
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <p className="text-xl mb-2">{job.CompanyName}</p>
-        <p className="text-gray-600 mb-2">{job.JobAddressLocation}</p>
-        <p className="text-gray-600 mb-4">Salary: {job.JobSalary}</p>
-        <div className="mb-4">
-          <h2 className="text-2xl font-semibold mb-2">Job Description</h2>
-          <p className="whitespace-pre-wrap">{job.JobDescription}</p>
-        </div>
-        <div className="mb-4">
-          <p className="text-sm text-gray-500">
-            Posted on: {new Date(job.PostedDate).toLocaleDateString()}
-          </p>
-          <p className="text-sm text-gray-500">
-            Application Deadline:{' '}
-            {new Date(job.ApplicationDeadline).toLocaleDateString()}
-          </p>
-        </div>
-        <Link href={`/jobs/${slug}/apply`}>
-          <span className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer">
-            Apply Now
-          </span>
-        </Link>
-      </div>
-    </div>
-  )
+  return job;
 }
 
-export default JobPage
+const JobPage = async ({ params }) => {
+  const { slug } = params;
+  const job = await getJob(slug);
+  const router = useRouter();
+
+  const handleApplyClick = () => {
+    router.push(`/jobs/${slug}/apply`);
+  };
+
+  return (
+    <div>
+      <header>
+        <h1>{job.title}</h1>
+        <p>{job.description}</p>
+        <p>{job.company}</p>
+        <p>{job.location}</p>
+      </header>
+      <section>
+        <button onClick={handleApplyClick}>Apply Now</button>
+      </section>
+    </div>
+  );
+};
+
+export default JobPage;
