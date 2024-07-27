@@ -40,7 +40,7 @@ const ApplicantDashboard: React.FC = () => {
       <div className="nav-container">
         <nav className="nav-bar">
           <Link href="/applicant-dashboard" className="nav-link">Home</Link>
-          <Link href="/posted-jobs" className="nav-link">Jobs</Link>
+          <Link href="/jobs" className="nav-link">Jobs</Link>
           <Link href="/#" className="nav-link">My Info</Link>
         </nav>
       </div>

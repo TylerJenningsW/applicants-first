@@ -22,7 +22,6 @@ export async function GET(
       },
     })
     console.log('Database query result:', job)
-
     if (!job) {
       console.log('Job not found in database')
       return NextResponse.json({ error: 'Job not found' }, { status: 404 })
