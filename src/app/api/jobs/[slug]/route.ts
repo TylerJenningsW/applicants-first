@@ -20,6 +20,7 @@ export async function GET(
             OrganizationName: true,
           },
         },
+        
       },
     })
     console.log('Database query result:', job)

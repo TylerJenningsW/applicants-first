@@ -1,8 +1,7 @@
 'use client'
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import prisma from '../../../utils/prisma/prismaClient';
-import fetchJobs from './actions';
+import React, { useEffect, useState } from 'react'
+import Link from 'next/link'
+import fetchJobs from './actions'
 
 const JobsPage = () => {
   const [jobs, setJobs] = useState<any[]>([])
@@ -11,7 +10,6 @@ const JobsPage = () => {
   useEffect(() => {
     const getJobs = async () => {
       const jobList = await fetchJobs()
-      console.log(JSON.stringify(jobList))
       setJobs(jobList)
       setLoading(false)
     }
@@ -29,9 +27,19 @@ const JobsPage = () => {
             <div key={job.JobID} className="border p-4 mb-4 rounded">
               <h2 className="text-xl font-bold">{job.JobTitle}</h2>
               <p>{job.JobDescription}</p>
-              <p>{new Date(job.PostedDate).toLocaleDateString()}</p>
-              <p>{job.organization?.OrganizationName || "Unknown Company"}</p>
-              <Link href={`/jobs/${job.Slug}`}> View Job</Link>
+              <p>Posted on: {new Date(job.PostedDate).toLocaleDateString()}</p>
+              <p>
+                Company:{' '}
+                {job.organization?.OrganizationName ||
+                  job.companyName ||
+                  'Unknown Company'}
+              </p>
+              <Link
+                href={`/jobs/${job.Slug}`}
+                className="text-blue-500 hover:underline"
+              >
+                View Job
+              </Link>
             </div>
           ))}
         </div>
@@ -39,4 +47,5 @@ const JobsPage = () => {
     </div>
   )
 }
-export default JobsPage;
+
+export default JobsPage

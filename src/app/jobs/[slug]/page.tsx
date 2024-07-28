@@ -30,7 +30,7 @@ const JobPage = () => {
 
       console.log('Fetching job with slug:', slug)
       try {
-        const response = await fetch(`http://localhost:3000/api/jobs/${slug}`)
+        const response = await fetch(`/api/jobs/${slug}`)
         console.log('API response status:', response.status)
 
         if (!response.ok) {

@@ -2,7 +2,7 @@ import React from 'react'
 
 export default async function Invite({ email, organizationId }: { email: string, organizationId: string }) {
     const handleInvite = async () => {
-        const inviteURL = 'http://localhost:3000/api/invite'
+        const inviteURL = '/api/invite'
         const response = await fetch(inviteURL, {
             method: 'POST',
             headers: {
