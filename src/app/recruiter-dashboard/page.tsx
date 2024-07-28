@@ -61,6 +61,7 @@ export default function RecruiterDashBoard() {
     }
 
     initializePage()
+    getJobs()
   }, [])
 
   const deleteJob = async (jobId: number, jobSlug: string | null) => {
