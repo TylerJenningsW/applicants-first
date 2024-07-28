@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-
+import styles from "./apply.module.css";
 const ApplyPage = () => {
   const router = useRouter();
   const params = useParams();
@@ -71,85 +71,98 @@ const ApplyPage = () => {
       console.error("Error submitting application:", error);
     }
   };
-
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Full Name</label>
-        <input
-          type="text"
-          value={fullname}
-          onChange={(e) => setFullname(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Email Address</label>
-        <input
-          type="email"
-          value={emailaddress}
-          onChange={(e) => setEmailaddress(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Alternate Email Address</label>
-        <input
-          type="email"
-          value={alternateemailaddress}
-          onChange={(e) => setAlternateEmailaddress(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Street Address</label>
-        <input
-          type="text"
-          value={streetaddress}
-          onChange={(e) => setStreetaddress(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>City</label>
-        <input
-          type="text"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>State</label>
-        <input
-          type="text"
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Zip Code</label>
-        <input
-          type="text"
-          value={zipcode}
-          onChange={(e) => setZipcode(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Country</label>
-        <input
-          type="text"
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>LinkedIn URL</label>
-        <input
-          type="text"
-          value={linkedinurl}
-          onChange={(e) => setLinkedinurl(e.target.value)}
-        />
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Apply for Position</h1>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.formGroup}>
+          <label htmlFor="fullname">Full Name</label>
+          <input
+            id="fullname"
+            type="text"
+            value={fullname}
+            onChange={(e) => setFullname(e.target.value)}
+            required
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="emailaddress">Email Address</label>
+          <input
+            id="emailaddress"
+            type="email"
+            value={emailaddress}
+            onChange={(e) => setEmailaddress(e.target.value)}
+            required
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="alternateemailaddress">Alternate Email Address</label>
+          <input
+            id="alternateemailaddress"
+            type="email"
+            value={alternateemailaddress}
+            onChange={(e) => setAlternateEmailaddress(e.target.value)}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="streetaddress">Street Address</label>
+          <input
+            id="streetaddress"
+            type="text"
+            value={streetaddress}
+            onChange={(e) => setStreetaddress(e.target.value)}
+          />
+        </div>
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label htmlFor="city">City</label>
+            <input
+              id="city"
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="state">State</label>
+            <input
+              id="state"
+              type="text"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="zipcode">Zip Code</label>
+            <input
+              id="zipcode"
+              type="text"
+              value={zipcode}
+              onChange={(e) => setZipcode(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="country">Country</label>
+          <input
+            id="country"
+            type="text"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="linkedinurl">LinkedIn URL</label>
+          <input
+            id="linkedinurl"
+            type="text"
+            value={linkedinurl}
+            onChange={(e) => setLinkedinurl(e.target.value)}
+          />
+        </div>
+        <button type="submit" className={styles.submitButton}>Submit Application</button>
+      </form>
+    </div>
   );
 };
 

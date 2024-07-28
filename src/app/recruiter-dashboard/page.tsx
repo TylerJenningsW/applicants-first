@@ -13,20 +13,21 @@ interface Applicant {
 }
 
 interface Job {
-  JobID: number
-  UserID: string
-  JobTitle: string
-  JobDescription: string
-  PostedDate: string
-  Slug: string
+  JobID: number;
+  UserID: string;
+  JobTitle: string;
+  JobDescription: string;
+  PostedDate: string | Date;
+  Slug: string | null;
+  OrganizationID: number | null;
   organization: {
-    OrganizationName: string
-  } | null
+    OrganizationName: string;
+  } | null;
   applicants: {
-    applicantid: number
-    fullname: string
-    emailaddress: string
-  }[]
+    applicantid: number;
+    fullname: string;
+    emailaddress: string;
+  }[];
 }
 
 export default function RecruiterDashBoard() {
@@ -62,7 +63,7 @@ export default function RecruiterDashBoard() {
     initializePage()
   }, [])
 
-  const deleteJob = async (jobId: number, jobSlug: string) => {
+  const deleteJob = async (jobId: number, jobSlug: string | null) => {
     if (!user) {
       alert('You must be logged in to delete a job')
       return
