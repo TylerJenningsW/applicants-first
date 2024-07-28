@@ -1,5 +1,0 @@
-NEXT_PUBLIC_SUPABASE_URL=https://lokpfahtcmlziiprdvdl.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxva3BmYWh0Y21semlpcHJkdmRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk2ODA2MzUsImV4cCI6MjAzNTI1NjYzNX0.hP0-wom7auHZ9JAaeiz47iM8jlN5vRZGXoTuKYDuVK0
-DATABASE_URL=postgresql://postgres.lokpfahtcmlziiprdvdl:IwAKBtcwD5z54uWW@aws-0-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true
-DIRECT_URL=postgresql://postgres.lokpfahtcmlziiprdvdl:IwAKBtcwD5z54uWW@aws-0-us-east-1.pooler.supabase.com:5432/postgres
-RESEND_API_KEY=re_4pyAz2KP_D8tb7djAdAvLyqKwi7eVLpsP
