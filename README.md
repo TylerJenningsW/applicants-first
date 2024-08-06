@@ -7,7 +7,6 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - RBAC - Roles include Admin, Recruiter, and Applicant
 - Admin Dashboard - Manage an organization.
 - Recruiter Dashboard - Manage jobs.
-test
 
 ## Technologies
 - **Frontend**: [Next.js](https://nextjs.org/)
