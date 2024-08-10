@@ -29,10 +29,12 @@ model Applicant {
   linkedinurl           String?
   uscitizen             Boolean?
   educationlevel        String?
-  specialty             String?
-  dateaddedtodb         DateTime @default(now())
-  job_id                Int
-  job                   Job      @relation(fields: [job_id], references: [JobID])
+  resumeUrl             String?
+
+  specialty     String?
+  dateaddedtodb DateTime @default(now())
+  job_id        Int
+  job           Job      @relation(fields: [job_id], references: [JobID])
 
   @@schema("public")
 }
