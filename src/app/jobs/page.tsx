@@ -132,7 +132,7 @@ const JobsPage = () => {
               </div>
             ))
           ) : (
-            <p>No jobs found for "{searchTerm}"</p>
+            <p> No jobs found for &apos;{searchTerm}&apos; </p>
           )}
         </div>
       )}
