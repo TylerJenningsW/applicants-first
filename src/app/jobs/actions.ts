@@ -1,3 +1,6 @@
+
+//Original Code
+
 // 'use server'
 // import prisma from '../../../utils/prisma/prismaClient'
 
@@ -14,6 +17,11 @@
 //     return []
 //   }
 // }
+
+
+
+//Code with filter feature 
+
 
 'use server';
 import prisma from '../../../utils/prisma/prismaClient';
@@ -39,3 +47,6 @@ export default async function fetchJobs(searchTerm = '') {
     return [];
   }
 }
+
+
+

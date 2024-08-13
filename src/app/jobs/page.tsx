@@ -1,3 +1,8 @@
+
+
+
+//Original Code
+
 // 'use client'
 // import React, { useEffect, useState } from 'react'
 // import Link from 'next/link'
@@ -49,6 +54,14 @@
 // }
 
 // export default JobsPage
+
+
+
+
+
+// Code with filter //
+
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -128,3 +141,5 @@ const JobsPage = () => {
 };
 
 export default JobsPage;
+
+
