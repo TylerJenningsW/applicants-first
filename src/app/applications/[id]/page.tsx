@@ -18,6 +18,7 @@ export interface Applicant {
   educationlevel?: string
   specialty?: string
   dateaddedtodb: string
+  resumeUrl?: string
 }
 
 export default function ApplicationPage() {
@@ -41,6 +42,7 @@ export default function ApplicationPage() {
         }
         const data = await response.json()
         setApplicant(data)
+        console.log(data)
       } catch (error) {
         console.error('Error fetching applicant:', error)
         setError('Failed to load applicant data')
@@ -141,6 +143,20 @@ export default function ApplicationPage() {
             <strong>Application Date:</strong>{' '}
             {new Date(applicant.dateaddedtodb).toLocaleDateString()}
           </p>
+        </div>
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold">Resume</h2>
+          {applicant.resumeUrl ? (
+            <div className="mt-4">
+              <iframe
+                src={`${applicant.resumeUrl}#toolbar=0&navpanes=0&scrollbar=0`}
+                className="w-full h-[600px] border border-gray-300"
+                title="Applicant Resume"
+              />
+            </div>
+          ) : (
+            <p>No resume available</p>
+          )}
         </div>
       </div>
     </div>
