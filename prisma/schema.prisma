@@ -29,6 +29,7 @@ model Applicant {
   linkedinurl           String?
   uscitizen             Boolean?
   educationlevel        String?
+  parsedResume          Json?
   resumeUrl             String?
 
   specialty     String?
