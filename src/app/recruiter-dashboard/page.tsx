@@ -7,9 +7,10 @@ import { getBrowserClient } from '../../../utils/supabase/supaBaseBrowserClient'
 
 interface Applicant {
   applicant: {
-    fullname: string
-    emailaddress: string
-  }
+    fullname: string;
+    emailaddress: string;
+  };
+  status: string;
 }
 
 interface Job {
@@ -27,6 +28,7 @@ interface Job {
     applicantid: number;
     fullname: string;
     emailaddress: string;
+    status: string;
   }[];
 }
 
@@ -93,6 +95,40 @@ export default function RecruiterDashBoard() {
     getJobs()
   }
 
+
+ const toggleStatus = async (applicantId: number, currentStatus: string) => {
+   const newStatus =
+     currentStatus === "Viewed"
+       ? "Pending"
+       : currentStatus === "Pending"
+       ? "Rejected"
+       : "Viewed";
+
+   try {
+     await fetch(`/api/applicants/${applicantId}/status`, {
+       method: "PUT",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify({ status: newStatus }),
+     });
+
+
+  setJobs((prevJobs) =>
+      prevJobs.map((job) => ({
+        ...job,
+        applicants: job.applicants.map((applicant) =>
+          applicant.applicantid === applicantId
+            ? { ...applicant, status: newStatus }
+            : applicant
+        ),
+      }))
+    );
+   } catch (error) {
+     console.error("Failed to update status:", error);
+   }
+  }
+
   if (loading) {
     return <div>Loading jobs...</div>
   }
@@ -142,6 +178,15 @@ export default function RecruiterDashBoard() {
                       >
                         View Full Application
                       </Link>
+                      <div>
+                        <span>Status: {app.status}</span>
+                        <button
+                          onClick={() => toggleStatus(app.applicantid, app.status)}
+                          className="ml-4 bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
+                        >
+                          Toggle Status
+                        </button>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -172,3 +217,4 @@ export default function RecruiterDashBoard() {
     </div>
   )
 }
+

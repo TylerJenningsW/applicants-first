@@ -67,13 +67,21 @@ const JobsPage = () => {
               <div key={job.JobID} className="border p-4 mb-4 rounded">
                 <h2 className="text-xl font-bold">{job.JobTitle}</h2>
                 <p>{job.JobDescription}</p>
-                <p>Posted on: {new Date(job.PostedDate).toLocaleDateString()}</p>
                 <p>
-                  Company:{' '}
+                  Posted on: {new Date(job.PostedDate).toLocaleDateString()}
+                </p>
+                <p>
+                  Company:{" "}
                   {job.organization?.OrganizationName ||
                     job.CompanyName ||
-                    'Unknown Company'}
+                    "Unknown Company"}
                 </p>
+                
+                <p>
+                  Application Status:{" "}
+                  <strong>{job.ApplicationStatus || "Not Applied"}</strong>
+                </p>
+
                 <Link
                   href={`/jobs/${job.Slug}`}
                   className="text-blue-500 hover:underline"
