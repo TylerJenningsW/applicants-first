@@ -34,7 +34,7 @@ model Applicant {
   specialty             String?
   dateaddedtodb         DateTime @default(now())
   job_id                Int
-  job                   Job      @relation(fields: [job_id], references: [JobID])
+  job                   Job      @relation(fields: [job_id], references: [JobID], onDelete: Cascade)
 
   @@schema("public")
 }
