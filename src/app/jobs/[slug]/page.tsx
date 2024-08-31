@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import RecruiterHeader from '@/app/components/RecruiterHeader'
+import ApplicantHeader from '@/app/components/ApplicantHeader'
 
 interface Job {
   JobID: number
@@ -15,7 +17,7 @@ interface Job {
   CompanyName: string
 }
 
-const JobPage = () => {
+const JobPage = ({role}: {role: string}) => {
   const params = useParams()
   const {slug} = params
   const [job, setJob] = useState<Job | null>(null)
@@ -66,9 +68,13 @@ const JobPage = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <>
+    {role === 'recruiter' ? (
+      <RecruiterHeader />
+    ) : <ApplicantHeader />}
+    <div className="w-full p-4 m-0">
       <h1 className="text-3xl font-bold mb-4">{job.JobTitle}</h1>
-      <div className="bg-white shadow-md rounded-lg p-6">
+      <div className="bg-white shadow-md rounded-lg p-6 w-full">
         <p className="text-xl mb-2">{job.CompanyName}</p>
         <p className="text-gray-600 mb-2">{job.JobAddressLocation}</p>
         <p className="text-gray-600 mb-4">Salary: {job.JobSalary}</p>
@@ -92,6 +98,7 @@ const JobPage = () => {
         </Link>
       </div>
     </div>
+    </>
   )
 }
 

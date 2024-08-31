@@ -10,11 +10,15 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const applications = await prisma.applicant.findMany({
-      where: { job_id: parseInt(jobId, 10) },
-      include: { job: true },
+    const jobApplications = await prisma.jobApplication.findMany({
+      where: { jobId: parseInt(jobId, 10) },
+      include: {
+        applicant: true,
+        status: true,
+        job: true,
+      },
     });
-    return NextResponse.json({ data: applications }, { status: 200 });
+    return NextResponse.json({ data: jobApplications }, { status: 200 });
   } catch (error) {
     console.error("Error fetching applicants:", error);
     return NextResponse.json(

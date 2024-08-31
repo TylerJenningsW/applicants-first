@@ -1,6 +1,6 @@
-'use client' // Add this directive
+'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 
 import '@/app/styles/RoleManagement.css' // Import the CSS file
@@ -36,9 +36,8 @@ const RoleManagement: React.FC = () => {
             <option value="" disabled>
               Select a Role
             </option>
-            <option value="Administrator">Administrator</option>
             <option value="Recruiter">Recruiter</option>
-            <option value="Client">Client</option>
+            <option value="Applicant">Applicant</option>
           </select>
         </div>
         <button className="continue-button" onClick={handleContinue}>
