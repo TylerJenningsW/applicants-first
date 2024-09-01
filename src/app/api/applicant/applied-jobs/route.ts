@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
       applicationStatus: application.status?.status || 'pending',
       appliedAt: application.appliedAt,
     }))
-
+    
     return NextResponse.json({ jobs: formattedJobs }, { status: 200 })
   } catch (error) {
     console.error('Error fetching applied jobs:', error)

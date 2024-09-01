@@ -181,7 +181,7 @@ export default function RecruiterDashBoard() {
                           )
                         </span>
                         <Link
-                          href={`/applications/${app.applicant.applicantid}`}
+                          href={`/recruiter-dashboard/applications/${app.applicant.applicantid}`}
                           className="ml-2 text-blue-500 hover:underline"
                         >
                           View Full Application
