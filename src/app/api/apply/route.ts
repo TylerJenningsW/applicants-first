@@ -61,9 +61,21 @@ export async function POST(req: NextRequest) {
         linkedinurl: formData.get('linkedinurl') as string || null,
         resumeUrl: resumeUrl,
         parsedResume: parsedResume || Prisma.JsonNull, // hack to avoid null error
-        job_id: parseInt(jobId, 10),
-      },
+        jobApplications: {
+          create: {
+            job: {
+              connect: { JobID: parseInt(jobId, 10) }
+            },
+            status: {
+              create: {
+                status: "pending"
+              }
+            }
+          }
+        }
+      }      
     })
+
 
     return NextResponse.json({ data: applicant }, { status: 200 })
   } catch (err) {

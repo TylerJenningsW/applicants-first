@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import styles from './apply.module.css'
 import ResumeUpload from './resumeUpload'
+import ApplicantHeader from '@/app/components/ApplicantHeader'
 const ApplyPage = () => {
   const router = useRouter()
   const params = useParams()
@@ -73,6 +74,8 @@ const ApplyPage = () => {
     }
   }
   return (
+    <>
+    <ApplicantHeader />    
     <div className={styles.container}>
       <h1 className={styles.title}>Apply for Position</h1>
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -167,6 +170,8 @@ const ApplyPage = () => {
         </button>
       </form>
     </div>
+  )
+  </>
   )
 }
 

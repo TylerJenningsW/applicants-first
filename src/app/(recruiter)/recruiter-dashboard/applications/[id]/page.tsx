@@ -258,7 +258,7 @@ export default function ApplicationPage() {
         <div className="mb-4">
           <h2 className="text-xl font-semibold">Additional Information</h2>
           <p>
-            <strong>US Citizen:</strong> {applicant.uscitizen ? 'Yes' : 'No'}
+            <strong>US Citizen:</strong> {applicant.uscitizen ? 'Yes' : 'Yes'}
           </p>
           <p>
             <strong>Application Date:</strong>{' '}

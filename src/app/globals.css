@@ -11,7 +11,7 @@
 
 /* Custom global styles for the Home page */
 html, body {
-  @apply w-full h-full m-0 p-0; /* Ensure full width and height with no margin and padding */
+  @apply w-full h-full m-0 p-0 bg-gradient-to-b from-blue-100 to-white; /* Ensure full width and height with no margin and padding */
 }
 
 body {
