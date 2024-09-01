@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import fetchJobs from './actions'
+import { fetchJobs, initializePage } from './actions'
 import { useRouter } from 'next/navigation'
 import { getBrowserClient } from '../../../../utils/supabase/supaBaseBrowserClient'
 
@@ -49,7 +49,6 @@ export default function RecruiterDashBoard() {
   const [refreshing, setRefreshing] = useState(false)
   const [user, setUser] = useState<any>(null)
   const router = useRouter()
-  const supabase = getBrowserClient()
   const updateApplicationStatus = async (
     applicantId: number,
     jobId: number,
@@ -85,20 +84,16 @@ export default function RecruiterDashBoard() {
   }
 
   useEffect(() => {
-    const initializePage = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-      setUser(user)
-      if (user) {
-        await getJobs()
+    const init = async () => {
+      const [bool, user] = await initializePage()
+      if (bool) {
+        setUser(user)
       } else {
-        // Handle case where user is not logged in
         router.push('/login')
       }
     }
 
-    initializePage()
+    init()
     getJobs()
   }, [])
 
@@ -157,7 +152,7 @@ export default function RecruiterDashBoard() {
           </div>
         </div>
         {jobs.length === 0 ? (
-          <p className='p-4'>You haven&apos;t posted any jobs yet.</p>
+          <p className="p-4">You haven&apos;t posted any jobs yet.</p>
         ) : (
           <div className="p-0 m-0 w-full border rounded">
             {jobs.map((job) => (

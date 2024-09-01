@@ -3,7 +3,7 @@ import prisma from '../../../../utils/prisma/prismaClient'
 import { getServerClient } from '../../../../utils/supabase/supabaseClient'
 
 
-export default async function fetchJobs(userId?: string) {
+export async function fetchJobs(userId?: string) {
   try {
     const supabase = getServerClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -49,5 +49,21 @@ export default async function fetchJobs(userId?: string) {
   } catch (error) {
     console.error('Error fetching jobs:', error)
     return []
+  }
+}
+
+export async function initializePage(): Promise<[boolean, any]> {
+  try {
+    const supabase = getServerClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+      return [false, null];
+    }
+
+    return [true, user];
+  } catch (error) {
+    console.error('Error initializing page:', error)
+    return [false, null];
   }
 }
