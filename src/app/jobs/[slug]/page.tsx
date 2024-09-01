@@ -17,13 +17,12 @@ interface Job {
   CompanyName: string
 }
 
-const JobPage = ({role}: {role: string}) => {
+export default function Page() {
   const params = useParams()
-  const {slug} = params
+  const { slug } = params
   const [job, setJob] = useState<Job | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-
   useEffect(() => {
     console.log(slug)
 
@@ -68,10 +67,6 @@ const JobPage = ({role}: {role: string}) => {
   }
 
   return (
-    <>
-    {role === 'recruiter' ? (
-      <RecruiterHeader />
-    ) : <ApplicantHeader />}
     <div className="w-full p-4 m-0">
       <h1 className="text-3xl font-bold mb-4">{job.JobTitle}</h1>
       <div className="bg-white shadow-md rounded-lg p-6 w-full">
@@ -98,8 +93,5 @@ const JobPage = ({role}: {role: string}) => {
         </Link>
       </div>
     </div>
-    </>
   )
 }
-
-export default JobPage
