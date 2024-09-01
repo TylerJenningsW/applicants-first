@@ -1,77 +1,81 @@
 'use client'
 
-import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import styles from "./apply.module.css";
+import React, { useState, useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import styles from './apply.module.css'
+import ResumeUpload from './resumeUpload'
+import ApplicantHeader from '@/app/components/ApplicantHeader'
 const ApplyPage = () => {
-  const router = useRouter();
-  const params = useParams();
-  const slug = params.slug as string;
-  const [fullname, setFullname] = useState("");
-  const [emailaddress, setEmailaddress] = useState("");
-  const [alternateemailaddress, setAlternateEmailaddress] = useState("");
-  const [streetaddress, setStreetaddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [zipcode, setZipcode] = useState("");
-  const [country, setCountry] = useState("");
-  const [linkedinurl, setLinkedinurl] = useState("");
-  const [jobId, setJobId] = useState<number | null>(null);
+  const router = useRouter()
+  const params = useParams()
+  const slug = params.slug as string
+  const [fullname, setFullname] = useState('')
+  const [emailaddress, setEmailaddress] = useState('')
+  const [alternateemailaddress, setAlternateEmailaddress] = useState('')
+  const [streetaddress, setStreetaddress] = useState('')
+  const [city, setCity] = useState('')
+  const [state, setState] = useState('')
+  const [zipcode, setZipcode] = useState('')
+  const [country, setCountry] = useState('')
+  const [linkedinurl, setLinkedinurl] = useState('')
+  const [jobId, setJobId] = useState<number | null>(null)
+  const [resumeFile, setResumeFile] = useState<File | null>(null)
 
   useEffect(() => {
     const fetchJobId = async () => {
-      const response = await fetch(`/api/jobs/${slug}`);
+      const response = await fetch(`/api/jobs/${slug}`)
       if (response.ok) {
-        const job = await response.json();
-        setJobId(job.JobID);
+        const job = await response.json()
+        setJobId(job.JobID)
       } else {
-        console.error('Failed to fetch job');
+        console.error('Failed to fetch job')
       }
-    };
+    }
 
-    fetchJobId();
-  }, [slug]);
+    fetchJobId()
+  }, [slug])
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    if (!jobId) {
-      console.error("Job ID not found");
-      return;
+    if (!jobId || !resumeFile) {
+      console.error('Job ID or resume not found')
+      return
     }
+
+    const formData = new FormData()
+    formData.append('fullname', fullname)
+    formData.append('emailaddress', emailaddress)
+    formData.append('alternateemailaddress', alternateemailaddress)
+    formData.append('streetaddress', streetaddress)
+    formData.append('city', city)
+    formData.append('state', state)
+    formData.append('zipcode', zipcode)
+    formData.append('country', country)
+    formData.append('linkedinurl', linkedinurl)
+    formData.append('jobId', jobId.toString())
+    formData.append('resume', resumeFile)
 
     try {
       const response = await fetch('/api/apply', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fullname,
-          emailaddress,
-          alternateemailaddress,
-          streetaddress,
-          city,
-          state,
-          zipcode,
-          country,
-          linkedinurl,
-          jobId,
-        }),
-      });
+        body: formData,
+      })
 
       if (response.ok) {
-        const result = await response.json();
-        console.log("Application submitted:", result);
-        router.push(`/jobs/${slug}`);
+        const result = await response.json()
+        console.log('Application submitted:', result)
+        router.push(`/jobs/${slug}`)
       } else {
-        throw new Error("Failed to submit application");
+        throw new Error('Failed to submit application')
       }
     } catch (error) {
-      console.error("Error submitting application:", error);
+      console.error('Error submitting application:', error)
     }
-  };
+  }
   return (
+    <>
+    <ApplicantHeader />    
     <div className={styles.container}>
       <h1 className={styles.title}>Apply for Position</h1>
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -160,10 +164,15 @@ const ApplyPage = () => {
             onChange={(e) => setLinkedinurl(e.target.value)}
           />
         </div>
-        <button type="submit" className={styles.submitButton}>Submit Application</button>
+        <ResumeUpload setResumeFile={setResumeFile} />
+        <button type="submit" className={styles.submitButton}>
+          Submit Application
+        </button>
       </form>
     </div>
-  );
-};
+  )
+  </>
+  )
+}
 
-export default ApplyPage;
+export default ApplyPage

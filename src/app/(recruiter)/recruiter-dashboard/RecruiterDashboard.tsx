@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import "../styles/RecruiterDashboard.css"; // Import the CSS file
+import "../styles/RecruiterDashboard.css";
 
 const RecruiterDashboard: React.FC = () => {
   return (

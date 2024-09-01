@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import '../styles/Hiring.css'; // Import the CSS file
+import '../../../styles/Hiring.css';
 
 const Hiring: React.FC = () => {
   return (
@@ -14,8 +14,8 @@ const Hiring: React.FC = () => {
           <h1 className="hiring-app-name">Applicants First</h1>
         </div>
         <div className="hiring-user-info">
-          <span>Hello, Applicant</span>
-          <Link href="/admin-dashboard" legacyBehavior>
+          <span>Hello, Recruiter</span>
+          <Link href="/recruiter-dashboard" legacyBehavior>
             <button className="back-button">Back</button>
           </Link>
         </div>

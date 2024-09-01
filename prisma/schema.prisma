@@ -16,8 +16,30 @@ datasource db {
   schemas   = ["public"]
 }
 
+model ApplicationStatus {
+  id               Int            @id @default(autoincrement())
+  status           String         @default("pending")
+  jobApplication   JobApplication @relation(fields: [jobApplicationId], references: [id], onDelete: Cascade)
+  jobApplicationId Int            @unique
+
+  @@schema("public")
+}
+
+model JobApplication {
+  id          Int                @id @default(autoincrement())
+  applicant   Applicant          @relation(fields: [applicantId], references: [applicantid], onDelete: Cascade)
+  applicantId Int
+  job         Job                @relation(fields: [jobId], references: [JobID], onDelete: Cascade)
+  jobId       Int
+  appliedAt   DateTime           @default(now())
+  status      ApplicationStatus?
+
+  @@unique([applicantId, jobId])
+  @@schema("public")
+}
+
 model Applicant {
-  applicantid           Int      @id @default(autoincrement())
+  applicantid           Int              @id @default(autoincrement())
   fullname              String
   emailaddress          String
   alternateemailaddress String?
@@ -29,10 +51,11 @@ model Applicant {
   linkedinurl           String?
   uscitizen             Boolean?
   educationlevel        String?
+  parsedResume          Json?
+  resumeUrl             String?
   specialty             String?
-  dateaddedtodb         DateTime @default(now())
-  job_id                Int
-  job                   Job      @relation(fields: [job_id], references: [JobID])
+  dateaddedtodb         DateTime         @default(now())
+  jobApplications       JobApplication[]
 
   @@schema("public")
 }
@@ -78,22 +101,22 @@ model Invitations {
 }
 
 model Job {
-  JobID                  Int           @id @default(autoincrement())
+  JobID                  Int              @id @default(autoincrement())
   OrganizationID         Int?
   UserID                 String
   JobTitle               String
   JobAddressLocation     String
-  PostedDate             DateTime      @default(now())
+  PostedDate             DateTime         @default(now())
   JobSalary              String
   JobStatus              String
   CandidateResponseCount Int
   TotalApplicantsCount   Int
   JobDescription         String
   ApplicationDeadline    DateTime
-  organization           Organization? @relation(fields: [OrganizationID], references: [OrganizationID])
-  profile                Profile       @relation(fields: [UserID], references: [id])
-  applicants             Applicant[]
-  Slug                   String?       @unique
+  organization           Organization?    @relation(fields: [OrganizationID], references: [OrganizationID])
+  profile                Profile          @relation(fields: [UserID], references: [id])
+  jobApplications        JobApplication[]
+  Slug                   String?          @unique
 
   @@schema("public")
 }
