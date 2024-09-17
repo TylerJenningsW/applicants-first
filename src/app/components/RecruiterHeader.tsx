@@ -23,7 +23,7 @@ function RecruiterHeader() {
           <Link href="/recruiter-dashboard" className="nav-link">
             Home
           </Link>
-          <Link href="/hiring" className="nav-link">
+          <Link href="/recruiter-dashboard/hiring" className="nav-link">
             Hiring
           </Link>
           <Link href="/my-info" className="nav-link">

@@ -63,3 +63,113 @@
     @apply text-lg text-gray-700;
   }
   
+
+
+
+  /* Recruiter Dashboard Styles */
+  .recruiter-dashboard__container {
+    @apply my-5 mx-auto p-5 bg-white shadow-md rounded-lg;
+  }
+  
+  /* Header */
+  .recruiter-dashboard__header {
+    @apply flex justify-between items-center mb-5;
+  }
+  
+  .recruiter-dashboard__title {
+    @apply text-2xl font-bold;
+  }
+  
+  /* Buttons */
+  .recruiter-dashboard__button {
+    @apply px-5 py-2.5 rounded-lg cursor-pointer text-sm transition-all duration-300 ;
+  }
+  
+  .recruiter-dashboard__button:hover {
+    @apply shadow-lg;
+  }
+  
+  .recruiter-dashboard__button--approve {
+    @apply bg-green-600 text-white mr-3 ;
+  }
+  
+  .recruiter-dashboard__button--approve:hover {
+    @apply bg-green-700;
+  }
+  
+  .recruiter-dashboard__button--deny {
+    @apply bg-red-600 text-white ;
+  }
+  
+  .recruiter-dashboard__button--deny:hover {
+    @apply bg-red-700;
+  }
+  
+  .recruiter-dashboard__button--delete {
+    @apply bg-red-500 text-white;
+  }
+  
+  .recruiter-dashboard__button--delete:hover {
+    @apply bg-red-600;
+  }
+  
+  .recruiter-dashboard__button--refresh {
+    @apply bg-blue-600 text-white mr-4;
+  }
+  
+  .recruiter-dashboard__button--refresh:hover {
+    @apply bg-blue-700;
+  }
+  
+  .recruiter-dashboard__button--post-job {
+    @apply bg-indigo-600 text-white;
+  }
+  
+  .recruiter-dashboard__button--post-job:hover {
+    @apply bg-indigo-700;
+  }
+  
+  /* Links */
+  .recruiter-dashboard__link {
+    @apply text-blue-500 transition-all duration-300;
+  }
+  
+  .recruiter-dashboard__link:hover {
+    @apply text-blue-600 underline;
+  }
+  
+  /* Table */
+  .recruiter-dashboard__table {
+    @apply w-full border-collapse bg-gray-50;
+  }
+  
+  .recruiter-dashboard__table-header,
+  .recruiter-dashboard__table-cell {
+    @apply p-3 border border-gray-300 text-left;
+  }
+  
+  .recruiter-dashboard__table-header {
+    @apply bg-blue-500 text-white font-semibold;
+  }
+  
+  .recruiter-dashboard__table-cell {
+    @apply bg-white;
+  }
+  
+  /* Applicant Info */
+  .recruiter-dashboard__applicant {
+    @apply flex justify-between items-center mb-2;
+  }
+
+  .recruiter-dashboard__applicant-info {
+    @apply flex-grow; /* Ensure the applicant info takes the available space */
+  }
+  
+  .recruiter-dashboard__status {
+    @apply ml-3 font-semibold;
+  }
+  
+  /* Actions */
+  .recruiter-dashboard__actions {
+    @apply flex items-center space-x-4;
+  }
