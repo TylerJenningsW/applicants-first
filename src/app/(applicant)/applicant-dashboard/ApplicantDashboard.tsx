@@ -137,7 +137,6 @@ const ApplicantDashboard: React.FC = () => {
               <p>Loading applied jobs...</p>
             ) : jobs.length > 0 ? (
               <div className="applicant-dashboard">
-                <h2>My Job Applications</h2>
                 <div className="overflow-x-auto">
                   <table className="applicant-dashboard__table w-full border-collapse bg-gray-50">
                     <thead>
