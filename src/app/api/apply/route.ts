@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -99,7 +100,19 @@ export async function POST(req: NextRequest) {
       }
     })
 
-    return NextResponse.json({ data: applicant }, { status: 200 })
+    const jobApplication = await prisma.jobApplication.create({
+      data: {
+        applicantId: applicant.applicantid,
+        jobId: parseInt(jobId, 10),
+        status: {
+          create: {
+            status: "pending"
+          }
+        }
+      }
+    })
+
+    return NextResponse.json({ data: { applicant, jobApplication } }, { status: 200 })
   } catch (err) {
     console.error('Error saving application:', err)
     return NextResponse.json(

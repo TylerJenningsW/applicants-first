@@ -14,10 +14,10 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    
     const applicant = await prisma.applicant.findUnique({
       where: { profileId: user.id },
     })
+    console.log(applicant)    
 
     if (!applicant) {
       return NextResponse.json(
@@ -43,6 +43,7 @@ export async function GET(req: NextRequest) {
         status: true,
       },
     })
+    console.log(appliedJobs, 'appliedJobs')    
 
     const formattedJobs = appliedJobs.map((application) => ({
       ...application.job,
