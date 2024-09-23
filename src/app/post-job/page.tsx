@@ -1,9 +1,12 @@
-import React from 'react'
-import ProtectedRoute from '../components/ProtectedRoute'
-import PostJob from './PostJob'
+"use client"; 
+
+import ProtectedRoute from '@/app/components/ProtectedRoute';
+import PostJob from '@/app/post-job/PostJob';
+import React from 'react';
 import { useRouter } from 'next/navigation'; // For redirection after job posting
 
-const router = useRouter();
+export default function PostJobPage() {
+  const router = useRouter(); // Call useRouter inside the component
 
   // Function to handle successful job posting
   const handleJobPosted = async () => {
@@ -16,10 +19,9 @@ const router = useRouter();
     router.push('/recruiter-dashboard'); // Example of closing the modal or navigating
   };
 
-export default function PostJobPage() {
   return (
     <ProtectedRoute>
-     <PostJob onJobPosted={handleJobPosted} onClose={handleClose} />
+      <PostJob onJobPosted={handleJobPosted} onClose={handleClose} />
     </ProtectedRoute>
-  )
+  );
 }

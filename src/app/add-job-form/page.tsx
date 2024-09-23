@@ -1,8 +1,8 @@
-// import React from 'react';
-// import AddJobForm from './AddJobForm';
+import React from 'react';
+import AddJobForm from './AddJobForm';
 
-// const AddJobPage: React.FC = () => {
-//   return <AddJobForm />;
-// };
+const AddJobPage: React.FC = () => {
+  return <AddJobForm />;
+};
 
-// export default AddJobPage;
+export default AddJobPage;
