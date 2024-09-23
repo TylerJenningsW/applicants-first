@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '../../../../../utils/prisma/prismaClient'
-import { getServerClient } from '../../../../../utils/supabase/supabaseClient'
+import { createClient } from '../../../../../utils/supabase/server'
+
 export async function GET(req: NextRequest) {
-  const supabase = getServerClient()
+  const supabase = createClient()
   const {
     data: { user },
     error: authError,
@@ -13,8 +14,9 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const applicant = await prisma.applicant.findFirst({
-      where: { emailaddress: user.email },
+    
+    const applicant = await prisma.applicant.findUnique({
+      where: { profileId: user.id },
     })
 
     if (!applicant) {

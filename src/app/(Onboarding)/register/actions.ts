@@ -51,6 +51,7 @@ export async function signup(formData: FormData) {
     await prisma.profile.create({
       data: {
         id: user.id,
+        email: user.email,
         role: data.role,
         first_name: data.firstName,
         last_name: data.lastName,
