@@ -18,7 +18,7 @@ function RecruiterHeader() {
           <LogOutButton />
         </div>
       </header>
-      <div className="nav-container-recruiter">
+      {/* <div className="nav-container-recruiter">
         <nav className="nav-bar">
           <Link href="/recruiter-dashboard" className="nav-link">
             Home
@@ -30,7 +30,7 @@ function RecruiterHeader() {
             My Info
           </Link>
         </nav>
-      </div>
+      </div> */}
     </div>
   )
 }
