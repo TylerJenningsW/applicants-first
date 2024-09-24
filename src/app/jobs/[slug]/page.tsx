@@ -5,6 +5,15 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import RecruiterHeader from '@/app/components/RecruiterHeader'
 import ApplicantHeader from '@/app/components/ApplicantHeader'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import ApplyPage from './apply/page'
 
 interface Job {
   JobID: number
@@ -68,7 +77,6 @@ export default function Page() {
 
   return (
     <div className="w-full p-4 m-0">
-      
       <h1 className="text-3xl font-bold mb-4">{job.JobTitle}</h1>
       <div className="bg-white shadow-md rounded-lg p-6 w-full">
         <p className="text-xl mb-2">{job.CompanyName}</p>
@@ -87,11 +95,24 @@ export default function Page() {
             {new Date(job.ApplicationDeadline).toLocaleDateString()}
           </p>
         </div>
-        <Link href={`/jobs/${slug}/apply`}>
-          <span className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer">
-            Apply Now
-          </span>
-        </Link>
+        <div>
+          <Dialog>
+            <DialogTrigger>
+              {' '}
+              <span className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer">
+                Apply Now
+              </span>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Apply</DialogTitle>
+                <DialogDescription>
+                  <ApplyPage />
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </div>
   )

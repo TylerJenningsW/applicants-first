@@ -65,7 +65,6 @@ const ApplyPage = () => {
       if (response.ok) {
         const result = await response.json()
         console.log('Application submitted:', result)
-        router.push(`/jobs/${slug}`)
       } else {
         throw new Error('Failed to submit application')
       }
@@ -75,7 +74,6 @@ const ApplyPage = () => {
   }
   return (
     <>
-    <ApplicantHeader />    
     <div className={styles.container}>
       <h1 className={styles.title}>Apply for Position</h1>
       <form onSubmit={handleSubmit} className={styles.form}>
