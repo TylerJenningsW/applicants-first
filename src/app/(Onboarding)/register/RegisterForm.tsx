@@ -133,26 +133,6 @@ const RegisterForm: React.FC = () => {
         </button>
       </form>
 
-      <ToastContainer />
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        className="modal-content1"
-        overlayClassName="modal-overlay1"
-      >
-        <div className="modal-header1">Verify Email</div>
-        <div className="modal-body1">
-          <input
-            type="text"
-            placeholder="Enter verification code"
-            className="form-input1 w-full"
-          />
-        </div>
-        <div className="modal-footer1">
-          <button onClick={closeModal} className="close-button1">Close</button>
-          <button onClick={closeModal} className="send-button1">Verify</button>
-        </div>
-      </Modal>
 
       
 
