@@ -8,6 +8,7 @@ import { login } from './actions' // Import the actions
 const LoginForm: React.FC = () => {
   return (
     <div className="login-container">
+
       <h2 className="login-title">Login</h2>
       <form className="login-form">
         <div className="form-group">

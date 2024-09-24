@@ -5,6 +5,15 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import RecruiterHeader from '@/app/components/RecruiterHeader'
 import ApplicantHeader from '@/app/components/ApplicantHeader'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import ApplyPage from './apply/page'
 
 interface Job {
   JobID: number
@@ -23,35 +32,37 @@ export default function Page() {
   const [job, setJob] = useState<Job | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  useEffect(() => {
-    console.log(slug)
+  const [userRole, setUserRole] = useState<string | null>(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-    const fetchJob = async () => {
+  useEffect(() => {
+    const fetchJobAndUserRole = async () => {
       if (!slug) return
 
-      console.log('Fetching job with slug:', slug)
       try {
-        const response = await fetch(`/api/jobs/${slug}`)
-        console.log('API response status:', response.status)
+        const [jobResponse, userResponse] = await Promise.all([
+          fetch(`/api/jobs/${slug}`),
+          fetch('/api/user/role'),
+        ])
 
-        if (!response.ok) {
-          const errorText = await response.text()
-          console.error('API error response:', errorText)
-          throw new Error('Failed to fetch job')
+        if (!jobResponse.ok || !userResponse.ok) {
+          throw new Error('Failed to fetch data')
         }
 
-        const jobData = await response.json()
-        console.log('Received job data:', jobData)
+        const jobData = await jobResponse.json()
+        const userData = await userResponse.json()
+
         setJob(jobData)
+        setUserRole(userData.role)
       } catch (error) {
-        console.error('Error fetching job:', error)
-        setError('Failed to load job details')
+        console.error('Error fetching data:', error)
+        setError('Failed to load data')
       } finally {
         setLoading(false)
       }
     }
 
-    fetchJob()
+    fetchJobAndUserRole()
   }, [slug])
 
   if (loading) {
@@ -68,6 +79,16 @@ export default function Page() {
 
   return (
     <div className="w-full p-4 m-0">
+      <Link
+        href={
+          userRole === 'recruiter'
+            ? '/recruiter-dashboard'
+            : '/applicant-dashboard'
+        }
+        className="mb-4 inline-block bg-blue-500 text-white hover:bg-gray-300 font-bold py-2 px-4 rounded"
+      >
+        ← Back to Dashboard
+      </Link>
       <h1 className="text-3xl font-bold mb-4">{job.JobTitle}</h1>
       <div className="bg-white shadow-md rounded-lg p-6 w-full">
         <p className="text-xl mb-2">{job.CompanyName}</p>
@@ -86,11 +107,26 @@ export default function Page() {
             {new Date(job.ApplicationDeadline).toLocaleDateString()}
           </p>
         </div>
-        <Link href={`/jobs/${slug}/apply`}>
-          <span className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer">
-            Apply Now
-          </span>
-        </Link>
+        <div>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger>
+              {' '}
+              <span className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer">
+                Apply Now
+              </span>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Apply</DialogTitle>
+                <DialogDescription>
+                  <ApplyPage
+                    onApplicationSubmit={() => setIsDialogOpen(false)}
+                  />
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </div>
   )

@@ -33,8 +33,9 @@ model JobApplication {
 }
 
 model Applicant {
-  applicantid           Int              @id @default(autoincrement())
+  applicantid           Int              @id @default(autoincrement())  
   profileId             String           @unique
+  profile               Profile          @relation(fields: [profileId], references: [id])
   fullname              String
   emailaddress          String
   alternateemailaddress String?
@@ -72,6 +73,7 @@ model Organization {
 model Profile {
   id              String        @id @default(uuid())
   role            String
+  email           String        @unique
   first_name      String?
   last_name       String?
   organization_id Int?
@@ -82,10 +84,11 @@ model Profile {
   Applicant       Applicant?
   jobs            Job[]
   organization    Organization? @relation(fields: [organization_id], references: [OrganizationID])
+  jobs            Job[]
+  applicant       Applicant?
 
   @@schema("public")
 }
-
 model Invitations {
   id             Int          @id @default(autoincrement())
   email          String

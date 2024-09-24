@@ -14,6 +14,12 @@ export async function POST(req: NextRequest) {
   const supabase = createClient()
 
   try {
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     const formData = await req.formData()
     const file = formData.get('resume') as File
     const jobId = formData.get('jobId') as string
@@ -46,10 +52,26 @@ export async function POST(req: NextRequest) {
       // parsedResume = await parseResumeFromDocx(resumeUrl)
       console.log('DOCX parsing not implemented yet')
     }
+    // Create or update profile
+    const profile = await prisma.profile.upsert({
+      where: { id: user.id },
+      update: {
+        email: user.email!,
+        last_login_date: new Date()
+      },
+      create: {
+        id: user.id,
+        email: user.email!,
+        role: 'applicant',
+        creation_date: new Date(),
+        last_login_date: new Date()
+      },
+    })
 
-    // Create applicant record
-    const applicant = await prisma.applicant.create({
-      data: {
+    // Create or update applicant record
+    const applicant = await prisma.applicant.upsert({
+      where: { profileId: user.id },
+      update: {
         fullname: formData.get('fullname') as string,
         emailaddress: formData.get('emailaddress') as string,
         alternateemailaddress: formData.get('alternateemailaddress') as string || null,
@@ -60,24 +82,37 @@ export async function POST(req: NextRequest) {
         country: formData.get('country') as string || null,
         linkedinurl: formData.get('linkedinurl') as string || null,
         resumeUrl: resumeUrl,
-        parsedResume: parsedResume || Prisma.JsonNull, // hack to avoid null error
-        jobApplications: {
-          create: {
-            job: {
-              connect: { JobID: parseInt(jobId, 10) }
-            },
-            status: {
-              create: {
-                status: "pending"
-              }
-            }
-          }
-        }
-      }      
+        parsedResume: parsedResume || Prisma.JsonNull,
+      },
+      create: {
+        profileId: user.id,
+        fullname: formData.get('fullname') as string,
+        emailaddress: formData.get('emailaddress') as string,
+        alternateemailaddress: formData.get('alternateemailaddress') as string || null,
+        streetaddress: formData.get('streetaddress') as string || null,
+        city: formData.get('city') as string || null,
+        state: formData.get('state') as string || null,
+        zipcode: formData.get('zipcode') as string || null,
+        country: formData.get('country') as string || null,
+        linkedinurl: formData.get('linkedinurl') as string || null,
+        resumeUrl: resumeUrl,
+        parsedResume: parsedResume || Prisma.JsonNull,
+      }
     })
 
+    const jobApplication = await prisma.jobApplication.create({
+      data: {
+        applicantId: applicant.applicantid,
+        jobId: parseInt(jobId, 10),
+        status: {
+          create: {
+            status: "pending"
+          }
+        }
+      }
+    })
 
-    return NextResponse.json({ data: applicant }, { status: 200 })
+    return NextResponse.json({ data: { applicant, jobApplication } }, { status: 200 })
   } catch (err) {
     console.error('Error saving application:', err)
     return NextResponse.json(

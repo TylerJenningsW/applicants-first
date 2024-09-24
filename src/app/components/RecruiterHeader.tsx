@@ -18,19 +18,19 @@ function RecruiterHeader() {
           <LogOutButton />
         </div>
       </header>
-      <div className="nav-container-recruiter">
+      {/* <div className="nav-container-recruiter">
         <nav className="nav-bar">
           <Link href="/recruiter-dashboard" className="nav-link">
             Home
           </Link>
-          <Link href="/hiring" className="nav-link">
+          <Link href="/recruiter-dashboard/hiring" className="nav-link">
             Hiring
           </Link>
           <Link href="/my-info" className="nav-link">
             My Info
           </Link>
         </nav>
-      </div>
+      </div> */}
     </div>
   )
 }

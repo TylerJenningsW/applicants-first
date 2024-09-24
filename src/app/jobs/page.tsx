@@ -4,10 +4,24 @@
 //Code with Filter and Sort Features 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import fetchJobs from './actions';
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
+interface Job {
+  JobID: number;
+  JobTitle: string;
+  JobDescription: string;
+  PostedDate: string;
+  organization: {
+    OrganizationName: string;
+  };
+  CompanyName?: string;
+  Slug: string;
+}
+
+const columnHelper = createColumnHelper<Job>();
 const JobsPage = () => {
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,6 +43,42 @@ const JobsPage = () => {
   useEffect(() => {
     handleSearch(); // Fetch all jobs on initial load
   }, [sortBy]);
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor('JobTitle', {
+        header: 'Job Title',
+        cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor((row) => row.organization?.OrganizationName || row.CompanyName || 'Unknown Company', {
+        id: 'company',
+        header: 'Company',
+        cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor('PostedDate', {
+        header: 'Posted Date',
+        cell: (info) => new Date(info.getValue()).toLocaleDateString(),
+      }),
+      columnHelper.accessor('JobDescription', {
+        header: 'Description',
+        cell: (info) => info.getValue().substring(0, 100) + '...',
+      }),
+      columnHelper.accessor('Slug', {
+        header: 'Actions',
+        cell: (info) => (
+          <Link href={`/jobs/${info.getValue()}`} className="text-blue-500 hover:text-blue-600 hover:underline transition-all duration-300">
+            View Job
+          </Link>
+        ),
+      }),
+    ],
+    []
+  );
+
+  const table = useReactTable({
+    data: jobs,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
     <div className="container mx-auto p-4">
@@ -61,184 +111,36 @@ const JobsPage = () => {
       {loading ? (
         <p>Loading jobs...</p>
       ) : (
-        <div>
-          {jobs.length > 0 ? (
-            jobs.map((job) => (
-              <div key={job.JobID} className="border p-4 mb-4 rounded">
-                <h2 className="text-xl font-bold">{job.JobTitle}</h2>
-                <p>{job.JobDescription}</p>
-                <p>Posted on: {new Date(job.PostedDate).toLocaleDateString()}</p>
-                <p>
-                  Company:{' '}
-                  {job.organization?.OrganizationName ||
-                    job.CompanyName ||
-                    'Unknown Company'}
-                </p>
-                <Link
-                  href={`/jobs/${job.Slug}`}
-                  className="text-blue-500 hover:underline"
-                >
-                  View Job
-                </Link>
-              </div>
-            ))
-          ) : (
-            <p> No jobs found for &apos;{searchTerm}&apos; </p>
-          )}
-        </div>
+        <div className="overflow-x-auto">
+        <table className="applicant-dashboard__table w-full border-collapse bg-gray-50">
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id} className="applicant-dashboard__table-header p-3 border border-gray-300 text-left bg-blue-500 text-white font-semibold">
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="applicant-dashboard__table-cell p-3 border border-gray-300 text-left bg-white">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       )}
     </div>
   );
 };
 
 export default JobsPage;
-
-
-
-
-
-
-
-
-//Original Code
-
-// 'use client'
-// import React, { useEffect, useState } from 'react'
-// import Link from 'next/link'
-// import fetchJobs from './actions'
-
-// const JobsPage = () => {
-//   const [jobs, setJobs] = useState<any[]>([])
-//   const [loading, setLoading] = useState(true)
-
-//   useEffect(() => {
-//     const getJobs = async () => {
-//       const jobList = await fetchJobs()
-//       setJobs(jobList)
-//       setLoading(false)
-//     }
-//     getJobs()
-//   }, [])
-
-//   return (
-//     <div className="container mx-auto p-4">
-//       <h1 className="text-2xl font-bold mb-4">Jobs</h1>
-//       {loading ? (
-//         <p>Loading jobs...</p>
-//       ) : (
-//         <div>
-//           {jobs.map((job) => (
-//             <div key={job.JobID} className="border p-4 mb-4 rounded">
-//               <h2 className="text-xl font-bold">{job.JobTitle}</h2>
-//               <p>{job.JobDescription}</p>
-//               <p>Posted on: {new Date(job.PostedDate).toLocaleDateString()}</p>
-//               <p>
-//                 Company:{' '}
-//                 {job.organization?.OrganizationName ||
-//                   job.companyName ||
-//                   'Unknown Company'}
-//               </p>
-//               <Link
-//                 href={`/jobs/${job.Slug}`}
-//                 className="text-blue-500 hover:underline"
-//               >
-//                 View Job
-//               </Link>
-//             </div>
-//           ))}
-//         </div>
-//       )}
-//     </div>
-//   )
-// }
-
-// export default JobsPage
-
-
-
-
-
-// Code with filter //
-
-
-// 'use client';
-
-// import React, { useState, useEffect } from 'react';
-// import Link from 'next/link';
-// import fetchJobs from './actions';
-
-// const JobsPage = () => {
-//   const [jobs, setJobs] = useState<any[]>([]);
-//   const [loading, setLoading] = useState(true);
-//   const [searchTerm, setSearchTerm] = useState('');
-
-//   const handleSearch = async () => {
-//     setLoading(true);
-//     try {
-//       const jobList = await fetchJobs(searchTerm);
-//       setJobs(jobList);
-//     } catch (error) {
-//       console.error('Failed to fetch jobs:', error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     handleSearch(); // Fetch all jobs on initial load
-//   }, []);
-
-//   return (
-//     <div className="container mx-auto p-4">
-//       <h1 className="text-2xl font-bold mb-4">Jobs</h1>
-//       <div className="flex mb-4">
-//         <input
-//           type="text"
-//           value={searchTerm}
-//           onChange={(e) => setSearchTerm(e.target.value)}
-//           placeholder="Search jobs"
-//           className="border p-2 w-full"
-//         />
-//         <button
-//           onClick={handleSearch}
-//           className="ml-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
-//         >
-//           Search
-//         </button>
-//       </div>
-//       {loading ? (
-//         <p>Loading jobs...</p>
-//       ) : (
-//         <div>
-//           {jobs.length > 0 ? (
-//             jobs.map((job) => (
-//               <div key={job.JobID} className="border p-4 mb-4 rounded">
-//                 <h2 className="text-xl font-bold">{job.JobTitle}</h2>
-//                 <p>{job.JobDescription}</p>
-//                 <p>Posted on: {new Date(job.PostedDate).toLocaleDateString()}</p>
-//                 <p>
-//                   Company:{' '}
-//                   {job.organization?.OrganizationName ||
-//                     job.CompanyName ||
-//                     'Unknown Company'}
-//                 </p>
-//                 <Link
-//                   href={`/jobs/${job.Slug}`}
-//                   className="text-blue-500 hover:underline"
-//                 >
-//                   View Job
-//                 </Link>
-//               </div>
-//             ))
-//           ) : (
-//             <p> No jobs found for &apos;{searchTerm}&apos; </p>
-//           )}
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default JobsPage;
-
 
