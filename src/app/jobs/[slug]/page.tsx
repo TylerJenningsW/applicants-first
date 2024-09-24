@@ -68,6 +68,7 @@ export default function Page() {
 
   return (
     <div className="w-full p-4 m-0">
+      
       <h1 className="text-3xl font-bold mb-4">{job.JobTitle}</h1>
       <div className="bg-white shadow-md rounded-lg p-6 w-full">
         <p className="text-xl mb-2">{job.CompanyName}</p>
