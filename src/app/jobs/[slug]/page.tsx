@@ -33,6 +33,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [userRole, setUserRole] = useState<string | null>(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   useEffect(() => {
     const fetchJobAndUserRole = async () => {
@@ -107,7 +108,7 @@ export default function Page() {
           </p>
         </div>
         <div>
-          <Dialog>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger>
               {' '}
               <span className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer">
@@ -118,7 +119,9 @@ export default function Page() {
               <DialogHeader>
                 <DialogTitle>Apply</DialogTitle>
                 <DialogDescription>
-                  <ApplyPage />
+                  <ApplyPage
+                    onApplicationSubmit={() => setIsDialogOpen(false)}
+                  />
                 </DialogDescription>
               </DialogHeader>
             </DialogContent>
