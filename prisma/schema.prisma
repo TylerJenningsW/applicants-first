@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]
@@ -19,20 +13,20 @@ datasource db {
 model ApplicationStatus {
   id               Int            @id @default(autoincrement())
   status           String         @default("pending")
-  jobApplication   JobApplication @relation(fields: [jobApplicationId], references: [id], onDelete: Cascade)
   jobApplicationId Int            @unique
+  jobApplication   JobApplication @relation(fields: [jobApplicationId], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
 
 model JobApplication {
   id          Int                @id @default(autoincrement())
-  applicant   Applicant          @relation(fields: [applicantId], references: [applicantid], onDelete: Cascade)
   applicantId Int
-  job         Job                @relation(fields: [jobId], references: [JobID], onDelete: Cascade)
   jobId       Int
   appliedAt   DateTime           @default(now())
   status      ApplicationStatus?
+  applicant   Applicant          @relation(fields: [applicantId], references: [applicantid], onDelete: Cascade)
+  job         Job                @relation(fields: [jobId], references: [JobID], onDelete: Cascade)
 
   @@unique([applicantId, jobId])
   @@schema("public")
@@ -40,6 +34,7 @@ model JobApplication {
 
 model Applicant {
   applicantid           Int              @id @default(autoincrement())
+  profileId             String           @unique
   fullname              String
   emailaddress          String
   alternateemailaddress String?
@@ -55,6 +50,7 @@ model Applicant {
   resumeUrl             String?
   specialty             String?
   dateaddedtodb         DateTime         @default(now())
+  Profile               Profile          @relation(fields: [profileId], references: [id])
   jobApplications       JobApplication[]
 
   @@schema("public")
@@ -66,9 +62,9 @@ model Organization {
   CreationDate     DateTime
   SubscriptionType String?
   AccountStatus    String?
+  invitations      Invitations[]
   jobs             Job[]
   profiles         Profile[]
-  invitations      Invitations[]
 
   @@schema("public")
 }
@@ -82,8 +78,10 @@ model Profile {
   is_locked_out   Boolean?
   creation_date   DateTime      @default(now())
   last_login_date DateTime?
-  organization    Organization? @relation(fields: [organization_id], references: [OrganizationID])
+  email           String        @unique
+  Applicant       Applicant?
   jobs            Job[]
+  organization    Organization? @relation(fields: [organization_id], references: [OrganizationID])
 
   @@schema("public")
 }
@@ -113,10 +111,10 @@ model Job {
   TotalApplicantsCount   Int
   JobDescription         String
   ApplicationDeadline    DateTime
+  Slug                   String?          @unique
   organization           Organization?    @relation(fields: [OrganizationID], references: [OrganizationID])
   profile                Profile          @relation(fields: [UserID], references: [id])
   jobApplications        JobApplication[]
-  Slug                   String?          @unique
 
   @@schema("public")
 }
