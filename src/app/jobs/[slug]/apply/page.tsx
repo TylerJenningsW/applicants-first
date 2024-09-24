@@ -65,7 +65,6 @@ const ApplyPage = () => {
       if (response.ok) {
         const result = await response.json()
         console.log('Application submitted:', result)
-        router.push(`/jobs/${slug}`)
       } else {
         throw new Error('Failed to submit application')
       }
