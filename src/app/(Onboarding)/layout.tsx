@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <header className="header">
           <div className="logo">
-          <Link className='flex' href="/">
+          <Link className='flex items-center' href="/">
 
             <Image
               src="/images/Logo.png"
