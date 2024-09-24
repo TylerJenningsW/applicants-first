@@ -696,20 +696,20 @@ export default function RecruiterDashBoard() {
     {
       header: 'Actions',
       cell: ({ row }) => (
-        <div className="recruiter-dashboard__actions">
+        <div className="recruiter-dashboard__actions flex justify-end space-x-4" >
           <Link
-            href={`recruiter-dashboard/jobs/${row.original.Slug}`}
-            className="recruiter-dashboard__link"
-          >
-            View Job
-          </Link>
+      href={`recruiter-dashboard/jobs/${row.original.Slug}`}
+      className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
+    >
+      View Job
+    </Link>
           {user && (user.id === row.original.UserID || user.role === 'Administrator') && (
-            <button
-              onClick={() => deleteJob(row.original.JobID, row.original.Slug)}
-              className="recruiter-dashboard__button recruiter-dashboard__button--delete"
-            >
-              Delete Job
-            </button>
+           <button
+           onClick={() => deleteJob(row.original.JobID, row.original.Slug)}
+           className="text-red-500 hover:underline bg-transparent"
+         >
+           Delete Job
+         </button>
           )}
         </div>
       ),
