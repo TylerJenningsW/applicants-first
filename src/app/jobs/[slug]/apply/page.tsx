@@ -75,7 +75,6 @@ const ApplyPage = () => {
   }
   return (
     <>
-    <ApplicantHeader />    
     <div className={styles.container}>
       <h1 className={styles.title}>Apply for Position</h1>
       <form onSubmit={handleSubmit} className={styles.form}>
