@@ -24,9 +24,6 @@ function ApplicantHeader() {
           <Link href="/applicant-dashboard/jobs" className="nav-link">
             Jobs
           </Link>
-          <Link href="/#" className="nav-link">
-            My Info
-          </Link>
         </nav>
       </div>
     </div>
