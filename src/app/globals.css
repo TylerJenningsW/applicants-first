@@ -19,11 +19,11 @@ body {
 }
 
 .container {
-  @apply flex flex-col min-h-screen bg-gradient-to-b from-blue-100 to-white p-4 max-w-full;
+  @apply flex flex-col min-h-screen bg-gradient-to-b from-blue-100 to-white p-0 max-w-full;
 }
 
 .header {
-  @apply w-full py-6 bg-blue-500 flex justify-between items-center px-6 mt-8;
+  @apply w-full bg-blue-500 flex justify-between items-center px-6 mt-8;
 }
 .logo {
   @apply flex items-center;
