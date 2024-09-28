@@ -6,8 +6,9 @@ import styles from './apply.module.css'
 import ResumeUpload from './resumeUpload'
 import ApplicantHeader from '@/app/components/ApplicantHeader'
 import { DialogClose } from '@/components/ui/dialog'
+import { useApplication } from '@/app/components/ApplicationContext'
 
-const ApplyPage = ({ onApplicationSubmit }: { onApplicationSubmit: () => void }) => {
+const ApplyPage = () => {
   const router = useRouter()
   const params = useParams()
   const slug = params.slug as string
@@ -24,6 +25,7 @@ const ApplyPage = ({ onApplicationSubmit }: { onApplicationSubmit: () => void })
   const [resumeFile, setResumeFile] = useState<File | null>(null)
   const dialogCloseRef = useRef<HTMLButtonElement>(null)
 
+  const { setApplicationSuccess } = useApplication()
   useEffect(() => {
     const fetchJobId = async () => {
       const response = await fetch(`/api/jobs/${slug}`)
@@ -68,10 +70,9 @@ const ApplyPage = ({ onApplicationSubmit }: { onApplicationSubmit: () => void })
       if (response.ok) {
         const result = await response.json()
         console.log('Application submitted:', result)
+        setApplicationSuccess(true)
 
-        setTimeout(() => {
-          onApplicationSubmit()
-        }, 1000)
+        
       } else {
         throw new Error('Failed to submit application')
       }
