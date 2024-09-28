@@ -51,7 +51,6 @@ model Applicant {
   resumeUrl             String?
   specialty             String?
   dateaddedtodb         DateTime         @default(now())
-  Profile               Profile          @relation(fields: [profileId], references: [id])
   jobApplications       JobApplication[]
 
   @@schema("public")
@@ -80,9 +79,6 @@ model Profile {
   is_locked_out   Boolean?
   creation_date   DateTime      @default(now())
   last_login_date DateTime?
-  email           String        @unique
-  Applicant       Applicant?
-  jobs            Job[]
   organization    Organization? @relation(fields: [organization_id], references: [OrganizationID])
   jobs            Job[]
   applicant       Applicant?
