@@ -54,11 +54,21 @@ export interface Applicant {
     }[]
   }
 }
+
+
+interface Job {
+  JobID: number;
+  JobTitle: string;
+}
+
+
+
 export default function ApplicationPage() {
  
   const params = useParams()
   const [applicant, setApplicant] = useState<Applicant | null>(null)
   const [loading, setLoading] = useState(true)
+  const [job, setJob] = useState<Job | null>(null)
   const [error, setError] = useState<string | null>(null)
 
 
@@ -72,13 +82,24 @@ export default function ApplicationPage() {
       }
 
       try {
-        const response = await fetch(`/api/applications/${params.id}`)
-        if (!response.ok) {
+        // Fetch applicant data
+        const applicantResponse = await fetch(`/api/applications/${params.id}`)
+        if (!applicantResponse.ok) {
           throw new Error('Failed to fetch applicant data')
         }
-        const data = await response.json()
-        setApplicant(data)
-        console.log(data)
+        const applicantData = await applicantResponse.json()
+        setApplicant(applicantData)
+
+        // Fetch job data
+        const jobResponse = await fetch(`/api/jobs/${params.jobid}`)
+        if (!jobResponse.ok) {
+          throw new Error('Failed to fetch job data')
+        }
+        const jobData = await jobResponse.json()
+        setJob(jobData)
+
+        console.log('Applicant Data:', applicantData)
+        console.log('Job Data:', jobData)
       } catch (error) {
         console.error('Error fetching applicant:', error)
         setError('Failed to load applicant data')
@@ -89,26 +110,27 @@ export default function ApplicationPage() {
 
   
     fetchApplicant()
-  }, [params.id])
+  }, [params.id, params.jobid])
 
 
 
   const updateApplicationStatus = async (applicantId: number, jobId: number, status: string) => {
     try {
+      
       const response = await fetch('/api/update-application-status', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ applicantId, jobId, status }),
+        body: JSON.stringify({ applicantId: applicantId, jobId: job?.JobID, status }),
       });
 
       if (response.ok) {
         alert(`Application status updated to ${status}`);
         const data = await response.json();
-        alert(data.error || 'Failed to update application status');
+        console.log(data)
       } else {
-        
+        alert('Failed to update application status');      
        
       }
     } catch (error) {
@@ -116,7 +138,6 @@ export default function ApplicationPage() {
       alert('An error occurred while updating the application status');
     }
   };
-
 
 
 
