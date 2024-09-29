@@ -68,23 +68,9 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // Create or update applicant record
-    const applicant = await prisma.applicant.upsert({
-      where: { profileId: user.id },
-      update: {
-        fullname: formData.get('fullname') as string,
-        emailaddress: formData.get('emailaddress') as string,
-        alternateemailaddress: formData.get('alternateemailaddress') as string || null,
-        streetaddress: formData.get('streetaddress') as string || null,
-        city: formData.get('city') as string || null,
-        state: formData.get('state') as string || null,
-        zipcode: formData.get('zipcode') as string || null,
-        country: formData.get('country') as string || null,
-        linkedinurl: formData.get('linkedinurl') as string || null,
-        resumeUrl: resumeUrl,
-        parsedResume: parsedResume || Prisma.JsonNull,
-      },
-      create: {
+    // Create a new applicant record for this specific application
+    const applicant = await prisma.applicant.create({
+      data: {
         profileId: user.id,
         fullname: formData.get('fullname') as string,
         emailaddress: formData.get('emailaddress') as string,
