@@ -27,9 +27,6 @@ const ApplyPage = () => {
 
   const { setApplicationSuccess } = useApplication()
   useEffect(() => {
-    setApplicationSuccess(false)
-  }, [])
-  useEffect(() => {
     const fetchJobId = async () => {
       const response = await fetch(`/api/jobs/${slug}`)
       if (response.ok) {
