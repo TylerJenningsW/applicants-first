@@ -1,28 +1,12 @@
-"use client";
-
+// page.tsx
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import "./globals.css";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div className="container">
-      {/* Header Section */}
-      <header className="header">
-        <div className="logo">
-          <Image src="/images/Logo.png" alt="App Logo" width={40} height={40} />
-          <h1 className="app-name">Applicants First</h1>
-        </div>
-        <div className="top-buttons">
-          <Link href="/login">
-            <button className="button">Log In</button>
-          </Link>
-          <Link href="/role-management">
-            <button className="button">Join Now</button>
-          </Link>
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section className="hero-section">
         <h1 className="hero-heading">Welcome to Applicants First</h1>
@@ -47,19 +31,22 @@ export default function Home() {
             src="/images/company1.png"
             alt="Company 1"
             width={200}
-            height={40}
+            height={30}
+            priority
           />
           <Image
             src="/images/company2.png"
             alt="Company 2"
             width={200}
-            height={40}
+            height={30}
+            priority
           />
           <Image
-            src="applicants-first/public/images/company3.png"
+            src="/images/company3.png"
             alt="Company 3"
             width={200}
-            height={40}
+            height={30}
+            priority
           />
         </div>
       </section>
@@ -80,8 +67,10 @@ export default function Home() {
             <p>Monitor and track applicant progress with ease.</p>
           </div>
           <div className="benefit-item">
-            <h4>Automated Notifications</h4>
-            <p>Automate interview reminders and follow-ups.</p>
+            <h4>Effortless Interview Scheduling</h4>
+            <p>
+              Easily manage and schedule interviews with an intuitive interface.
+            </p>
           </div>
         </div>
       </section>
@@ -117,13 +106,6 @@ export default function Home() {
           </p>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="footer">
-        <p>&copy; 2024 Applicants First. All rights reserved.</p>
-        <Link href="/privacy-policy">Privacy Policy</Link>
-        <Link href="/terms-of-service">Terms of Service</Link>
-      </footer>
     </div>
   );
 }
