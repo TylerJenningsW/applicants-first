@@ -9,8 +9,10 @@ function RecruiterHeader() {
     <div className="dashboard-container-recruiter">
       <header className="admin-header">
         <div className="admin-logo">
+          <Link className='flex' href='/recruiter-dashboard'>
           <Image src="/images/Logo.png" alt="App Logo" width={40} height={40} />
           <h1 className="admin-app-name">Applicants First</h1>
+          </Link>
         </div>
 
         <div className="user-info-recruiter">
