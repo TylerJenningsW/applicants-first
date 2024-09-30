@@ -1,23 +1,56 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import React from "react";
+import Image from "next/image";
 import "./globals.css";
 
-
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Applicants 1st",
-  description: "Applicants first, the best place to find your next job",
+export const metadata = {
+  title: "Applicants First",
+  description: "Streamline your hiring process with Applicants First",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        {/* Global Header */}
+        <header className="header">
+          <div className="logo">
+            <Image
+              src="/images/Applicant.png"
+              alt="Applicant Logo"
+              width={280}
+              height={90}
+              style={{ width: "280px", height: "90px" }} // Image size set to 280x90
+              priority
+            />
+          </div>
+          <div className="top-buttons">
+            <a href="/login" className="button">
+              Log In
+            </a>
+            <a href="/role-management" className="button">
+              Join Now
+            </a>
+          </div>
+        </header>
+
+        {/* Main content */}
+        <main>{children}</main>
+
+        {/* Global Footer */}
+        <footer className="footer">
+          <p>&copy; 2024 Applicants First. All rights reserved.</p>
+          <a href="/privacy-policy" className="footer-link">
+            Privacy Policy
+          </a>
+          <a href="/terms-of-service" className="footer-link">
+            Terms of Service
+          </a>
+        </footer>
+      </body>
     </html>
   );
 }

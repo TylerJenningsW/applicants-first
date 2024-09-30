@@ -15,16 +15,18 @@ html, body {
 }
 
 body {
-  @apply bg-gray-100 text-gray-900  ;
+  @apply bg-gray-100 text-gray-900;
 }
 
 .container {
   @apply flex flex-col min-h-screen bg-gradient-to-b from-blue-100 to-white p-4 max-w-full;
 }
 
+/* Header Styles */
 .header {
   @apply w-full py-6 bg-blue-500 flex justify-between items-center px-6 mt-8;
 }
+
 .logo {
   @apply flex items-center;
 }
@@ -45,43 +47,119 @@ body {
   @apply bg-white text-blue-500 border border-blue-500 py-2 px-4 rounded hover:bg-blue-100 transition duration-300;
 }
 
-.main {
-  @apply flex flex-row justify-between items-center flex-grow text-left space-x-4 mt-20;
+/* Hero Section */
+.hero-section {
+  @apply text-center mt-12;
 }
 
-.intro-box {
-  @apply bg-white bg-opacity-70 p-12 rounded-lg shadow-lg max-w-3xl w-full ml-12 mb-12; /* Increase max-width to max-w-3xl */
-  animation: fadeIn 2s ease-in-out;
+.hero-heading {
+  @apply text-4xl font-bold mb-4 text-gray-800;
 }
 
-.welcome-heading {
-  @apply text-2xl font-bold mb-4 text-blue-500;
+.hero-subtext {
+  @apply text-lg text-gray-600 mb-6;
 }
 
-.intro-text {
-  @apply text-lg text-gray-700 mb-4 mt-12;
-  animation: slideIn 2s ease-in-out;
+.cta-buttons {
+  @apply flex justify-center space-x-4;
 }
 
-.action-buttons {
-  @apply flex space-x-4 mt-12;
+.cta-button {
+  @apply bg-green-500 text-white py-2 px-6 rounded hover:bg-green-600 transition duration-300;
 }
 
-.animated-button {
-  @apply bg-blue-500 text-white border border-blue-500 py-2 px-4 rounded hover:bg-blue-600 transition duration-300;
-  animation: bounce 2s infinite;
+/* Social Proof */
+.social-proof {
+  @apply text-center my-10 text-gray-600;
 }
 
-.welcome-sign {
-  @apply flex items-center justify-center w-full max-w-lg; /* Increase max-width to max-w-lg */
+.company-logos {
+  @apply flex justify-center space-x-8 mt-4;
 }
 
-.animated-welcome {
-  @apply text-7xl font-bold text-blue-500 mr-48 mb-12; /* Increase text size to text-6xl */
-  animation: fadeInSlideIn 3s ease-in-out;
+/* Benefits Section */
+.benefits-section {
+  @apply my-16;
 }
 
-/* Custom animations */
+.section-heading {
+  @apply text-center text-3xl font-bold mb-8 text-gray-800;
+}
+
+.benefits-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.benefit-item {
+  @apply bg-gray-100 p-8 rounded-lg shadow-lg text-center;
+}
+
+.benefit-item h4 {
+  @apply font-bold text-lg mb-2;
+}
+
+/* How It Works Section */
+.how-it-works {
+  @apply my-16 text-center;
+}
+
+.how-it-works ul {
+  @apply list-none p-0;
+}
+
+.how-it-works li {
+  @apply text-lg text-gray-600 mb-4;
+}
+
+/* Testimonials Section */
+.testimonials {
+  @apply bg-gray-100 py-12 rounded-lg shadow-lg my-16;
+  text-align: center;
+}
+
+.testimonial-item {
+  @apply mb-8;
+}
+
+.testimonial-item p {
+  @apply italic text-gray-600 mb-4;
+}
+
+.testimonial-item h4 {
+  @apply font-bold text-gray-800;
+}
+
+/* FAQ Section */
+.faq {
+  @apply my-16;
+}
+
+.faq-item {
+  @apply mb-8;
+}
+
+.faq-item h4 {
+  @apply font-bold text-lg mb-2 text-gray-800;
+}
+
+.faq-item p {
+  @apply text-gray-600;
+}
+
+/* Footer */
+.footer {
+  @apply bg-gray-800 text-white py-6 mt-12 text-center;
+}
+
+.footer a {
+  @apply text-blue-400 hover:text-blue-500 transition duration-300;
+}
+
+.footer p {
+  @apply text-sm mt-4;
+}
+
+/* Additional Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -124,4 +202,3 @@ body {
     opacity: 1;
   }
 }
-
