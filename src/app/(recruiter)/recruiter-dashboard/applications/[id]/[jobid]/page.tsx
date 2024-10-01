@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
+import Link from 'next/link';
 
 export interface Applicant {
   applicantid: number
@@ -53,13 +54,26 @@ export interface Applicant {
     }[]
   }
 }
+
+
+interface Job {
+  JobID: number;
+  JobTitle: string;
+}
+
+
+
 export default function ApplicationPage() {
+ 
   const params = useParams()
   const [applicant, setApplicant] = useState<Applicant | null>(null)
   const [loading, setLoading] = useState(true)
+  const [job, setJob] = useState<Job | null>(null)
   const [error, setError] = useState<string | null>(null)
 
+
   useEffect(() => {
+    console.log('Job ID from params:', params.id);
     const fetchApplicant = async () => {
       if (!params.id) {
         setError('Applicant ID is missing')
@@ -68,13 +82,24 @@ export default function ApplicationPage() {
       }
 
       try {
-        const response = await fetch(`/api/applications/${params.id}`)
-        if (!response.ok) {
+        // Fetch applicant data
+        const applicantResponse = await fetch(`/api/applications/${params.id}`)
+        if (!applicantResponse.ok) {
           throw new Error('Failed to fetch applicant data')
         }
-        const data = await response.json()
-        setApplicant(data)
-        console.log(data)
+        const applicantData = await applicantResponse.json()
+        setApplicant(applicantData)
+
+        // Fetch job data
+        const jobResponse = await fetch(`/api/jobs/${params.jobid}`)
+        if (!jobResponse.ok) {
+          throw new Error('Failed to fetch job data')
+        }
+        const jobData = await jobResponse.json()
+        setJob(jobData)
+
+        console.log('Applicant Data:', applicantData)
+        console.log('Job Data:', jobData)
       } catch (error) {
         console.error('Error fetching applicant:', error)
         setError('Failed to load applicant data')
@@ -83,8 +108,41 @@ export default function ApplicationPage() {
       }
     }
 
+  
     fetchApplicant()
-  }, [params.id])
+  }, [params.id, params.jobid])
+
+
+
+  const updateApplicationStatus = async (applicantId: number, jobId: number, status: string) => {
+    try {
+      
+      const response = await fetch('/api/update-application-status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ applicantId: applicantId, jobId: job?.JobID, status }),
+      });
+
+      if (response.ok) {
+        alert(`Application status updated to ${status}`);
+        const data = await response.json();
+        console.log(data)
+      } else {
+        alert('Failed to update application status');      
+       
+      }
+    } catch (error) {
+      console.error('Error updating application status:', error);
+      alert('An error occurred while updating the application status');
+    }
+  };
+
+
+
+
+
 
   if (loading) {
     return <div>Loading...</div>
@@ -99,6 +157,13 @@ export default function ApplicationPage() {
   }
   return (
     <div className="container mx-auto p-4">
+      
+     
+       {/* Back Link */}
+       <Link href="/recruiter-dashboard" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-4  inline-block w-16">
+            Back 
+        </Link>
+        
       <h1 className="text-2xl font-bold mb-4">Application Details</h1>
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div className="mb-4">
@@ -140,6 +205,11 @@ export default function ApplicationPage() {
               <strong>Country:</strong> {applicant.country}
             </p>
           )}
+
+         
+          
+          
+
         </div>
         <div className="mb-4">
           <h2 className="text-xl font-semibold">Professional Information</h2>
@@ -278,6 +348,30 @@ export default function ApplicationPage() {
           ) : (
             <p>No resume available</p>
           )}
+
+            {/*Approve  and deny Buttons */ }
+
+          <div className="recruiter-dashboard__buttons flex justify-end" style={{ marginTop: '20px' }} >
+            <button
+              onClick={() =>
+                updateApplicationStatus(applicant.applicantid, parseInt(params.id as string), 'approved')
+              }
+              className="recruiter-dashboard__button recruiter-dashboard__button--approve"
+            >
+              Approve
+            </button>
+            <button
+              onClick={() =>
+                updateApplicationStatus(applicant.applicantid, parseInt(params.id as string), 'denied')
+              }
+              className="recruiter-dashboard__button recruiter-dashboard__button--deny"
+            >
+              Deny
+            </button>
+          </div>
+          
+
+
         </div>
       </div>
     </div>

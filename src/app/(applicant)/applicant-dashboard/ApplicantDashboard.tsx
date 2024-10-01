@@ -1,7 +1,14 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+  createColumnHelper,
+} from '@tanstack/react-table'
 import '../../styles/ApplicantDashboard.css'
+import Link from 'next/link'
 
 interface Job {
   JobID: number
@@ -11,6 +18,20 @@ interface Job {
   }
   applicationStatus?: string
 }
+
+interface JobApplication {
+  JobID: number
+  JobTitle: string
+  organization: {
+    OrganizationName: string
+  }
+  PostedDate: string
+  applicationStatus: string
+  appliedAt: string
+  Slug?: string
+}
+
+const columnHelper = createColumnHelper<JobApplication>()
 
 const getStatusColor = (status: string) => {
   switch (status.toLowerCase()) {
@@ -26,7 +47,7 @@ const getStatusColor = (status: string) => {
 }
 
 const ApplicantDashboard: React.FC = () => {
-  const [jobs, setJobs] = useState<Job[]>([])
+  const [jobs, setJobs] = useState<JobApplication[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -48,6 +69,58 @@ const ApplicantDashboard: React.FC = () => {
     fetchAppliedJobs()
     console.log(jobs)
   }, [])
+
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor('JobTitle', {
+        header: 'Job Title',
+        cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor(
+        (row) => row.organization?.OrganizationName || 'Unknown Company',
+        {
+          id: 'company',
+          header: 'Company',
+          cell: (info) => info.getValue(),
+        }
+      ),
+      columnHelper.accessor('PostedDate', {
+        header: 'Posted Date',
+        cell: (info) => new Date(info.getValue()).toLocaleDateString(),
+      }),
+      columnHelper.accessor('appliedAt', {
+        header: 'Applied Date',
+        cell: (info) => new Date(info.getValue()).toLocaleDateString(),
+      }),
+      columnHelper.accessor('applicationStatus', {
+        header: 'Status',
+        cell: (info) => (
+          <span className={`status-${info.getValue().toLowerCase()}`}>
+            {info.getValue()}
+          </span>
+        ),
+      }),
+      columnHelper.accessor('Slug', {
+        header: 'Actions',
+        cell: (info) => (
+          <Link
+            href={`/jobs/${info.getValue()}`}
+            className="applicant-dashboard__link"
+          >
+            View Job Details
+          </Link>
+        ),
+      }),
+    ],
+    []
+  )
+
+  const table = useReactTable({
+    data: jobs,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
+
   return (
     <>
       <main className="main-content">
@@ -63,26 +136,49 @@ const ApplicantDashboard: React.FC = () => {
             {loading ? (
               <p>Loading applied jobs...</p>
             ) : jobs.length > 0 ? (
-              <ul>
-                {jobs.map((job) => (
-                  <li key={job.JobID} className="job-card">
-                    <div className="job-info">
-                      <h4>{job.JobTitle}</h4>
-                      <p>
-                        {job.organization?.OrganizationName ||
-                          'Unknown Company'}
-                      </p>
-                    </div>
-                    <div
-                      className={`job-status ${getStatusColor(
-                        job.applicationStatus || 'pending'
-                      )}`}
-                    >
-                      {job.applicationStatus || 'Pending'}
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <div className="applicant-dashboard">
+                <div className="overflow-x-auto">
+                  <table className="applicant-dashboard__table w-full border-collapse bg-gray-50">
+                    <thead>
+                      {table.getHeaderGroups().map((headerGroup) => (
+                        <tr key={headerGroup.id}>
+                          {headerGroup.headers.map((header) => (
+                            <th
+                              key={header.id}
+                              className="applicant-dashboard__table-header p-3 border border-gray-300 text-left bg-blue-500 text-white font-semibold"
+                            >
+                              {flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                            </th>
+                          ))}
+                        </tr>
+                      ))}
+                    </thead>
+                    <tbody>
+                      {table.getRowModel().rows.map((row) => (
+                        <tr key={row.id}>
+                          {row.getVisibleCells().map((cell) => (
+                            <td
+                              key={cell.id}
+                              className="applicant-dashboard__table-cell p-3 border border-gray-300 text-left bg-white"
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {jobs.length === 0 && (
+                  <p>You haven't applied to any jobs yet.</p>
+                )}
+              </div>
             ) : (
               <p>You haven't applied to any jobs yet.</p>
             )}

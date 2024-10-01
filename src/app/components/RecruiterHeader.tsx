@@ -9,8 +9,10 @@ function RecruiterHeader() {
     <div className="dashboard-container-recruiter">
       <header className="admin-header">
         <div className="admin-logo">
+          <Link className='flex' href='/recruiter-dashboard'>
           <Image src="/images/Logo.png" alt="App Logo" width={40} height={40} />
           <h1 className="admin-app-name">Applicants First</h1>
+          </Link>
         </div>
 
         <div className="user-info-recruiter">
@@ -18,19 +20,19 @@ function RecruiterHeader() {
           <LogOutButton />
         </div>
       </header>
-      <div className="nav-container-recruiter">
+      {/* <div className="nav-container-recruiter">
         <nav className="nav-bar">
           <Link href="/recruiter-dashboard" className="nav-link">
             Home
           </Link>
-          <Link href="/hiring" className="nav-link">
+          <Link href="/recruiter-dashboard/hiring" className="nav-link">
             Hiring
           </Link>
           <Link href="/my-info" className="nav-link">
             My Info
           </Link>
         </nav>
-      </div>
+      </div> */}
     </div>
   )
 }

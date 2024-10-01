@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .header1 {
-    @apply w-full py-6 flex bg-blue-500 justify-center items-center w-full px-6 mt-6 ;
+    @apply w-full py-6 flex bg-blue-500 justify-start items-center px-6 mt-6 ;
 }
 
 .logo1 {
