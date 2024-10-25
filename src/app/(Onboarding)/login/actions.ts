@@ -1,11 +1,11 @@
 'use server'
 
 import { redirect } from 'next/navigation'
-import { getServerClient } from '../../../../utils/supabase/supabaseClient'
 import prisma from '../../../../utils/prisma/prismaClient'
+import { createClient } from '../../../../utils/supabase/server'
 
 export async function login(formData: FormData) {
-  const supabase = getServerClient()
+  const supabase = createClient()
 
   const data = {
     email: formData.get('email') as string,

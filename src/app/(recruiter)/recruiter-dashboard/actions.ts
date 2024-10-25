@@ -1,11 +1,11 @@
 'use server'
 import prisma from '../../../../utils/prisma/prismaClient'
-import { getServerClient } from '../../../../utils/supabase/supabaseClient'
+import { createClient } from '../../../../utils/supabase/server'
 
 
 export async function fetchJobs(userId?: string) {
   try {
-    const supabase = getServerClient()
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
@@ -54,7 +54,7 @@ export async function fetchJobs(userId?: string) {
 
 export async function initializePage(): Promise<[boolean, any]> {
   try {
-    const supabase = getServerClient()
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
