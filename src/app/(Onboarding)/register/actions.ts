@@ -2,10 +2,10 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { getServerClient } from '../../../../utils/supabase/supabaseClient';
 import prisma from '../../../../utils/prisma/prismaClient';
+import { createClient } from '../../../../utils/supabase/server';
 export async function signup(formData: FormData) {
-  const supabase = getServerClient();
+  const supabase = createClient();
 
   // Extract form data
   const data = {
@@ -51,7 +51,7 @@ export async function signup(formData: FormData) {
     await prisma.profile.create({
       data: {
         id: user.id,
-        email: user.email,
+        email: user.email!,
         role: data.role,
         first_name: data.firstName,
         last_name: data.lastName,

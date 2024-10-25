@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '../../../../utils/prisma/prismaClient'
-import { getServerClient } from '../../../../utils/supabase/supabaseClient'
+import { createClient } from '../../../../utils/supabase/server'
 
 export async function POST(req: NextRequest) {
-  const supabase = getServerClient()
+  const supabase = createClient()
   const {
     data: { user },
     error: authError,

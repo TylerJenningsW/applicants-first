@@ -1,22 +1,23 @@
 import { NextRequest } from 'next/server';
-import { getServerClient } from '../../../../utils/supabase/supabaseClient';
 import { redirect } from 'next/navigation';
 import { EmailOtpType } from '@supabase/supabase-js';
+import { createClient } from '../../../../utils/supabase/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get('token_hash');
   const type = searchParams.get('type') as EmailOtpType | null;
   const next = searchParams.get('next') ?? '/';
+  const email = searchParams.get('email'); 
 
   if (token_hash && type) {
-    const supabase = getServerClient();
+    const supabase = createClient();
 
     const { data, error } = await supabase.auth.verifyOtp({
       type,
-      token: token_hash,
+      token_hash,
+      email: email || undefined,
     });
-
     console.log('Verification Data:', data);
     console.log('Verification Error:', error);
 

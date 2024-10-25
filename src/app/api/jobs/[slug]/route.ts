@@ -4,7 +4,6 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../../utils/prisma/prismaClient';
-import { getServerClient } from '../../../../../utils/supabase/supabaseClient';
 import { createClient } from '../../../../../utils/supabase/server';
 
 // Handle GET request to fetch a job by its slug
@@ -17,7 +16,7 @@ export async function GET(request: NextRequest, { params }: { params: { slug: st
     const job = await prisma.job.findUnique({
       where: { Slug: slug }, // Find job by slug
       include: {
-        organization: {
+        organization: { 
           select: {
             OrganizationName: true, // Include only the organization's name
           },
@@ -48,7 +47,7 @@ export async function DELETE(
   { params }: { params: { slug: string } }
 ) {
   // Get the Supabase client to manage user authentication
-  const supabase = getServerClient();
+  const supabase = createClient();
   const {
     data: { user },
     error: authError,
